@@ -23,11 +23,17 @@ public class Coordinate {
     }
 
     public Coordinate add(int x, int y){
-
+    	int newx = this.x + x;
+    	int newy = this.y + y;
+    	
+    	return new Coordinate(newx, newy);
     }
 
     public Coordinate add(Coordinate c){
-
+    	int newx = this.x + c.x;
+    	int newy = this.y + c.y;
+    	
+    	return new Coordinate(newx, newy);
     }
 
     @Override
