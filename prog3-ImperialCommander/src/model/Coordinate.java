@@ -25,7 +25,6 @@ public class Coordinate {
     public Coordinate add(int x, int y){
     	int newx = this.x + x;
     	int newy = this.y + y;
-    	int hola;
     	
     	return new Coordinate(newx, newy);
     }
