@@ -25,6 +25,7 @@ public class Coordinate {
     public Coordinate add(int x, int y){
     	int newx = this.x + x;
     	int newy = this.y + y;
+    	int hola;
     	
     	return new Coordinate(newx, newy);
     }
@@ -38,7 +39,7 @@ public class Coordinate {
 
     @Override
 	public String toString() {
-		return "Coordinate [x=" + x + ", y=" + y + "]";
+		return "[x" + x + ",y" + y + "]";
 	}
 
 	@Override
