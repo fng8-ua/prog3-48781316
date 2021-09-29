@@ -4,6 +4,19 @@ public class Coordinate {
 	private int x;
 	private int y;
 	
+	public class Coordinate implements Comparable<Coordinate>{
+		
+	}
+	
+	@Override
+	public int compareTo(Coordinate otra) {
+		
+		if((x - otra.x) < 0)
+			return x - otra.x;
+			
+		
+	}
+	
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
