@@ -1,21 +1,20 @@
 package model;
 
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
 	private int x;
 	private int y;
 	
-	public class Coordinate implements Comparable<Coordinate>{
-		
-	}
 	
 	@Override
 	public int compareTo(Coordinate otra) {
 		
-		if((x - otra.x) < 0)
+		if((x - otra.x) != 0)
 			return x - otra.x;
-			
-		
+		else
+			return y - otra.y;
+				
 	}
+	
 	
 	public Coordinate(int x, int y) {
 		this.x = x;
