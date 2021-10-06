@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class Coordinate implements Comparable<Coordinate> {
 	private int x;
 	private int y;
@@ -14,7 +17,7 @@ public class Coordinate implements Comparable<Coordinate> {
 			return y - otra.y;
 				
 	}
-	
+		
 	
 	public Coordinate(int x, int y) {
 		this.x = x;
@@ -48,6 +51,28 @@ public class Coordinate implements Comparable<Coordinate> {
     	return new Coordinate(newx, newy);
     }
 
+    
+public Set getNeighborhood() {
+		
+		Set<Coordinate> vecinas = new TreeSet<Coordinate>();
+		
+		//Ahora tenemos que recorrer las 9 posiciones de la matriz alrededor de la coordenada
+		
+			
+		Coordinate aux = new Coordinate(x,y);
+		
+		for(int i = y-1; i <= y+1; i++) {
+			for(int j = x-1; j <= x+1; j++) {
+				if(j != aux.x && i != aux.y) {
+					vecinas.add(new Coordinate(j,i));
+				}
+			}
+		}
+		
+		
+		return vecinas;
+	}
+    
     @Override
 	public String toString() {
 		return "[x" + x + ",y" + y + "]";
