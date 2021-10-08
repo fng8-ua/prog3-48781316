@@ -27,15 +27,77 @@ public class Ship {
 		
 	}
 	
-	public void updateResults(int r) {}
+	public void updateResults(int r) {
+		if(r == 1)
+			wins++;
+		if(r == -1)
+			losses++;
+	}
 	
-	public Fighter getFirstAvailableFighter(String t) {}
+	public Fighter getFirstAvailableFighter(String t) {
+		
+		for(Fighter faf: fleet) {
+			if(!t.isEmpty()) {
+				if(!faf.isDestroyed() && faf.getType() == t) {
+					return faf;
+				}
+					
+			} else {
+				if(!faf.isDestroyed()) {
+					return faf;
+				}
+			}
+		}
+	}
 	
-	public void purgeFleet() {}
+	public void purgeFleet() {
+		for(Fighter f: fleet) {
+			if(f.isDestroyed()) {
+				fleet.remove(f);
+			}
+		}
+	}
 	
-	public String showFleet() {}
+	public String showFleet() {
+		StringBuilder str = new StringBuilder();
+		
+		if(!fleet.isEmpty()) {
+			for(Fighter f: fleet) {
+				str.append(f.toString());
+				
+				if(f.isDestroyed()) {
+					str.append(" (X) ");
+				}
+				
+				str.append("\n");
+			}
+			
+			return str.toString();
+		} else {
+			return str.toString();
+		}	
+	}
 	
-	public String myFleet() {}
+	// Cuenta el numero de fighters del mismo tipo
+	public int typeCounter(String typeName) {
+		int counter = 0;
+		
+		for(Fighter f: fleet) {
+			if(f.getType() == typeName) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
+	public String myFleet() {
+		StringBuilder str = new StringBuilder();
+		
+		// Estoy pensando que si tengo mi función typeCounter voy a tener que llamarla
+		// para todos los fighter.
+		
+		
+	}
 	
 	public String toString() {}
 }
