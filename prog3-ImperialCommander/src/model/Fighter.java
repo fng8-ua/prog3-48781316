@@ -77,17 +77,39 @@ public class Fighter {
 	
 	@Override
 	public String toString() {
-		return "("+ type + " " + id + " " + motherShip.getSide() " [" + position.getX() + "," + position.getY() + "] " + "{" + attack "," + velocity + "," + shield + "})";                           
+		StringBuilder str = new StringBuilder();
+		str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + attack "," + velocity + "," + shield + "})")
+		return str.toString();
 	}
 	
 	public int fight(Fighter enemy) {
 		if(shield <= 0 || enemy.isDestroyed())
 			return 0;
 		
-		
+		int n;
+		int umbral;
 		do {
-			//TODO
-		} while();
+			n = RandomNumber.newRandomNumber(100);
+			umbral = (100*velocity)/(enemy.getVelocity() + velocity);
+			
+			// Como se utiliza el randomNumber??
+			
+			if(umbral <= n) {
+				// el atacante será el caza
+				enemy.addShield(-getDamage(n,this));
+				
+				if(enemy.isDestroyed())
+					return 1;
+				
+			} else {
+				// el atacante será el enemigo
+				this.addShield(-getDamage(100-n,enemy));
+				
+				if(this.isDestroyed())
+					return -1;
+			}
+			
+		} while(!enemy.isDestroyed() && !isDestroyed());
 	}
 	
 
