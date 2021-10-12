@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Ship {
 	
@@ -78,26 +80,62 @@ public class Ship {
 		}	
 	}
 	
-	// Cuenta el numero de fighters del mismo tipo
-	public int typeCounter(String typeName) {
+	// Devuelve el número de cazas que hay de un tipo
+	public int sameType(String type) {
 		int counter = 0;
 		
 		for(Fighter f: fleet) {
-			if(f.getType() == typeName) {
+			if(f.getType() == type) {
 				counter++;
 			}
 		}
+		
 		return counter;
+	}
+	
+	// Elimina repetidos de una string
+	public void quitarRepetidosString(List<String> tipos) {
+		
+		Set<String> hashSet = new HashSet<String>(tipos);
+		tipos.clear();
+		tipos.addAll(hashSet);
 	}
 	
 	public String myFleet() {
 		StringBuilder str = new StringBuilder();
+		List<String> tipos = new ArrayList<String>();
 		
-		// Estoy pensando que si tengo mi función typeCounter voy a tener que llamarla
-		// para todos los fighter.
+		// Guardamos los nombres de los tipos
+		for(Fighter f: fleet) {
+			tipos.add(f.getType());
+		}
 		
+		// Quitamos los repetidos
+		quitarRepetidosString(tipos);
+		
+		
+		Boolean primero = true;
+		
+		for(int i = 0; i < tipos.size(); i++) {
+			if(primero) {
+				primero = false;
+				str.append(sameType(tipos.get(i))+"/"+tipos.get(i));
+			}
+			
+			str.append(":"+sameType(tipos.get(i))+"/"+tipos.get(i));
+
+		}
+		
+		return str.toString();
+}
+	
+	public String toString() {
+		// Ship [Alderaan 35/10] 12/XWing:7/AWing
+		StringBuilder str = new StringBuilder();
+		
+		str.append("Ship [" + name + " " + wins + "/" + losses + "] " + myFleet());
+		
+		return str.toString();
 		
 	}
-	
-	public String toString() {}
 }
