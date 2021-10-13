@@ -1,13 +1,30 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
 package model;
 
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * La clase coordinate.
+ */
 public class Coordinate implements Comparable<Coordinate> {
+	
+	/** Coordenada X. */
 	private int x;
+	
+	/** Coordenada Y. */
 	private int y;
 	
 	
+	/**
+	 * Compara dos coordenadas.
+	 *
+	 * @param otra coordenada
+	 * @return valor negativo o positivo según cual de las dos es más grande
+	 */
 	@Override
 	public int compareTo(Coordinate otra) {
 		
@@ -19,24 +36,52 @@ public class Coordinate implements Comparable<Coordinate> {
 	}
 		
 	
+	/**
+	 * Crea una nueva coordenada.
+	 *
+	 * @param Coordenada X
+	 * @param Coordenada Y
+	 */
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * Instancia una nueva coordenada copiando otra.
+	 *
+	 * @param la otra coordenada
+	 */
 	public Coordinate(Coordinate c) {
 		this.x = c.x;
 		this.y = c.y;
 	}
 	
+	/**
+	 * Devuelve la x.
+	 *
+	 * @return x
+	 */
 	public int getX(){
 	    return x;
 	}
 
+    /**
+     * Devuelve la y.
+     *
+     * @return y
+     */
     public int getY(){
         return y;
     }
 
+    /**
+     * Suma a la coordenada una nueva coordenada de la cual se pasan solo los valores.
+     *
+     * @param Lo que se le va a sumar a x
+     * @param Lo que se le va a sumar a y
+     * @return la nueva coordenada
+     */
     public Coordinate add(int x, int y){
     	int newx = this.x + x;
     	int newy = this.y + y;
@@ -44,6 +89,12 @@ public class Coordinate implements Comparable<Coordinate> {
     	return new Coordinate(newx, newy);
     }
 
+    /**
+     * Suma a la coordenada una nueva coordenada pasada por parámetro.
+     *
+     * @param coordenada a sumar
+     * @return la nueva coordenada
+     */
     public Coordinate add(Coordinate c){
     	int newx = this.x + c.x;
     	int newy = this.y + c.y;
@@ -52,6 +103,19 @@ public class Coordinate implements Comparable<Coordinate> {
     }
 
     
+/**
+ * Devuelve las posiciones vecinas a esta coordenada.
+ * 
+ * ej:
+ * 
+ * 	   o   o   o
+ * 	   o   x   o   
+ *     o   o   o   
+ *  
+ *  
+ *  Se devuelven las posiciones marcadas por o.
+ * @return vector de coordenadas vecinas
+ */
 public Set getNeighborhood() {
 		
 		Set<Coordinate> vecinas = new TreeSet<Coordinate>();
@@ -73,11 +137,21 @@ public Set getNeighborhood() {
 		return vecinas;
 	}
     
+    /**
+     * Devuelve una cadena de las coordenadas.
+     *
+     * @return la cadena creada
+     */
     @Override
 	public String toString() {
 		return "[x" + x + ",y" + y + "]";
 	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,6 +161,12 @@ public Set getNeighborhood() {
 		return result;
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
