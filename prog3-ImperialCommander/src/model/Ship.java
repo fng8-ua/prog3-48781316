@@ -97,8 +97,8 @@ public class Ship {
 			typeName = partes[1];
 			
 			for(int j = 0; i < numTipos; j++) {
-				// Crear el numero de tipos indicado
-				new Fighter(typeName,this);
+				// Crear el numero de tipos indicado y lo añadimos a fleet
+				fleet.add(new Fighter(typeName,this));
 			}
 		}
 		
