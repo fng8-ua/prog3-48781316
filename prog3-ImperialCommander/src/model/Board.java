@@ -28,10 +28,14 @@ public class Board {
 		Objects.requireNonNull(f);
 	}
 	
-	public Boolean inside(Coordinate c) {
+	public boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);
 		
-		if((c.getX() > 0 && c.getX() < size-1) && (c.getY() > 0 && c.getY() < size-1))
+		if((c.getX() > 0 && c.getX() < size-1) && (c.getY() > 0 && c.getY() < size-1)) {
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 	
