@@ -44,6 +44,67 @@ public class Board {
 		return c.getNeighborhood();
 	}
 	
+
+// Necesitamos un modulo que haga que dos cazas peleen y actualice las posiciones
+	public int batalla(Fighter nuestro, Fighter enemigo) {
+		int res;
+		
+		res = nuestro.fight(enemigo);
+		if(res == 1) {
+			nuestro.getMotherShip().updateResults(1);
+			enemigo.getMotherShip().updateResults(-1);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * Esta función dados dos cazas nos dice si son del mismo bando (son amigos), o si por el
+	 * contrario son de bandos distintos (enemigos).
+	 * 
+	 * @param f1
+	 * @param f2
+	 * @return amigos
+	 */
+	public boolean sonAmigos(Fighter f1, Fighter f2) {
+		boolean amigos;
+		
+		if(f1.getMotherShip().getSide() == f2.getMotherShip().getSide()) {
+			amigos = true;
+		} else {
+			amigos = false;
+		}
+		
+		return amigos;
+	}
+	
+	/**
+	 * Nos dice si va a haber batalla o no queriendo colocar el caza en esa coordenada.
+	 * 
+	 * @param c
+	 * @param f
+	 * @return hay
+	 */
+	public boolean hayBatalla(Coordinate c, Fighter f) {
+		Fighter otro;
+		boolean hay = false;
+		
+		if(inside(c)) {
+			otro = fighters.get(c);
+			if(otro != null) {
+				if(!sonAmigos(f,otro)) {
+					hay = true;
+				} else {
+					hay = false;
+				}
+			}
+		} else {
+			hay = false;
+		}
+		
+		return hay;
+	}
+	
 	/**
 	 * Coloca un fighter si la coordenada está vacía o si ganamos la batalla contra
 	 * el fighter enemigo que haya en esa posición.
@@ -55,7 +116,41 @@ public class Board {
 	public int launch(Coordinate c, Fighter f) {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
+		Fighter otherF = fighters.get(c);
+		int result;
 		
+		// Comprobamos si está vacío
+		// Si no lo está comprobamos si tiene un caza de nuestro bando
+		// Si no lo es luchamos
+/**
+ * 	if(hayBatalla(c,f)) {
+			result = batalla(f,otherF);
+		}
+		
+		if(result == 1) {
+			fighters.put(c,f);
+		}	
+ */
+		if(!inside(c)) {
+			result = 0;
+		} else {
+			if(otherF == null || sonAmigos(f,otherF)) {
+				result = 0;
+				fighters.put(c,f);
+			} else {
+				result = batalla(f,otherF);
+				if(result == 1) {
+					fighters.put(c,f);
+				} else {
+					fighters.put(c,otherF);
+				}
+			}
+		}
+		
+		return result;
+		
+/**
+ * 		
 		int result;
 		Fighter posible;
 		
@@ -66,16 +161,11 @@ public class Board {
 				return 0;
 			} else {
 				if(posible.getSide() != f.getSide()){
-					result = f.fight(posible);
+					result = batalla(f,posible);
 					if(result == 1) {
-						f.getMotherShip().updateResults(1);
-						posible.getMotherShip().updateResults(-1);
-						fighters.remove(c);
-						fighters.put(c,f);
+						fighters.put(c, f);
 						return result;
 					} else {
-						f.getMotherShip().updateResults(-1);
-						posible.getMotherShip().updateResults(1);
 						return result;
 					}
 				} else {
@@ -83,6 +173,8 @@ public class Board {
 				}
 			}
 		}
+		
+ */
 		
 		
 	}
