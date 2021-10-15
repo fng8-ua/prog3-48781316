@@ -41,12 +41,48 @@ public class Board {
 	
 	public Set<Coordinate> getNeighborhood(Coordinate c){
 		Objects.requireNonNull(c);
-		
+		return c.getNeighborhood();
 	}
 	
+	/**
+	 * Coloca un fighter si la coordenada está vacía o si ganamos la batalla contra
+	 * el fighter enemigo que haya en esa posición.
+	 * 
+	 * @param c la coordenada
+	 * @param f fighter que queremos colocar
+	 * @return
+	 */
 	public int launch(Coordinate c, Fighter f) {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
+		
+		int result;
+		Fighter posible;
+		
+		if(inside(c)) {
+			posible = fighters.get(c);
+			if(posible == null) {
+				fighters.put(c, f);
+				return 0;
+			} else {
+				if(posible.getSide() != f.getSide()){
+					result = f.fight(posible);
+					if(result == 1) {
+						f.getMotherShip().updateResults(1);
+						posible.getMotherShip().updateResults(-1);
+						fighters.remove(c);
+						fighters.put(c,f);
+						return result;
+					} else {
+						f.getMotherShip().updateResults(-1);
+						posible.getMotherShip().updateResults(1);
+						return result;
+					}
+				} else {
+					return 0;
+				}
+			}
+		}
 		
 		
 	}
