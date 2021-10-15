@@ -6,20 +6,22 @@ import java.util.Objects;
 
 public class Board {
 	private int size;
+	private Map<Coordinate, Fighter> fighters;
 	
 	public Board(int size) {
-		Map<Coordinate, Fighter> = new HashMap<Coordinate,Fighter>();
+		fighters = new HashMap<Coordinate,Fighter>();
+		this.size = size;
 	}
 	
 	public Fighter getFighter(Coordinate c) {
 		Objects.requireNonNull(c);
-		Fighter f;
-		
-		
+		Fighter f = fighters.get(new Coordinate(c));
 		
 		return f;
 	}
 	
+	
+
 	public int getSize() {return size;}
 	
 	public Boolean removeFighter(Fighter f) {
@@ -28,6 +30,8 @@ public class Board {
 	
 	public Boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);
+		
+		if((c.getX() > 0 && c.getX() < size-1) && (c.getY() > 0 && c.getY() < size-1))
 		
 	}
 	

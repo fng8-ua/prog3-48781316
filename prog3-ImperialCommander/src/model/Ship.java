@@ -81,6 +81,7 @@ public class Ship {
 	 *
 	 * @param cadena fd
 	 */
+	
 	public void addFighters(String fd) {
 		int numTipos;
 		String typeName;
@@ -117,29 +118,38 @@ public class Ship {
 	}
 	
 	/**
+	 * Comprueba que el fighter pasado no está destruido, y que si el tipo no está vació
+	 * 
+	 * @param ftr el fighter
+	 * @param type el tipo
+	 * @return true o false según si es valido o no
+	 */
+	public boolean isFighterValid(Fighter ftr, String type) {
+		
+		if(ftr.isDestroyed()) {
+			return false;
+		} else if(type.isEmpty()) {
+			return true;
+		} else if(ftr.getType() == type) {
+			return true;
+		} else 
+			return false;
+		}
+	}
+	
+	/**
 	 * Devuelve el primer fighter del tipo que nos pasen por parámetro que no esté destruido.
 	 *
 	 * @param tipo de caza requerido
 	 * @return primer caza disponible
 	 */
 	public Fighter getFirstAvailableFighter(String t) {
-		Fighter f = null;
-		
-		for(Fighter faf: fleet) {
-			if(!t.isEmpty()) {
-				if(!faf.isDestroyed() && faf.getType() == t) {
-					f = faf;
-				}
-					
-			} else {
-				if(!faf.isDestroyed()) {
-					f = faf;
-				}
-			}
+		for(Fighter f: fleet) {
+			if(isFighterValid(f,t))
+				return f;
 		}
-		
-		return f;
 	}
+			
 	
 	/**
 	 * Elimina los cazas destruidos.
