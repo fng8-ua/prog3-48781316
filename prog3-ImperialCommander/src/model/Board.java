@@ -27,7 +27,17 @@ public class Board {
 	
 	public boolean removeFighter(Fighter f) {
 		Objects.requireNonNull(f);
-		return true;
+		Fighter aEliminar;
+		boolean borrado = false;
+		
+		aEliminar = fighters.get(f.getPosition());
+		
+		if(aEliminar.equals(f)) {
+			fighters.remove(f.getPosition());
+			borrado = true;
+		}
+		
+		return borrado;
 	}
 	
 	public boolean inside(Coordinate c) {
