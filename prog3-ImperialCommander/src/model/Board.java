@@ -3,6 +3,7 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class Board {
 	private int size;
@@ -24,8 +25,9 @@ public class Board {
 
 	public int getSize() {return size;}
 	
-	public Boolean removeFighter(Fighter f) {
+	public boolean removeFighter(Fighter f) {
 		Objects.requireNonNull(f);
+		return true;
 	}
 	
 	public boolean inside(Coordinate c) {
@@ -38,7 +40,7 @@ public class Board {
 		}
 		
 	}
-	
+							
 	public Set<Coordinate> getNeighborhood(Coordinate c){
 		Objects.requireNonNull(c);
 		return c.getNeighborhood();
@@ -119,18 +121,14 @@ public class Board {
 		Fighter otherF = fighters.get(c);
 		int result;
 		
-		// Comprobamos si está vacío
-		// Si no lo está comprobamos si tiene un caza de nuestro bando
-		// Si no lo es luchamos
-/**
- * 	if(hayBatalla(c,f)) {
-			result = batalla(f,otherF);
-		}
+		/**
+		  -  Comprobamos si está vacío
+		  -  Si no lo está comprobamos si tiene un caza de nuestro bando
+		  -  Si no lo es luchamos
+		 
+		 */
 		
-		if(result == 1) {
-			fighters.put(c,f);
-		}	
- */
+
 		if(!inside(c)) {
 			result = 0;
 		} else {
@@ -145,42 +143,32 @@ public class Board {
 					fighters.put(c,otherF);
 				}
 			}
-		}
-		
-		return result;
-		
-/**
- * 		
-		int result;
-		Fighter posible;
-		
-		if(inside(c)) {
-			posible = fighters.get(c);
-			if(posible == null) {
-				fighters.put(c, f);
-				return 0;
-			} else {
-				if(posible.getSide() != f.getSide()){
-					result = batalla(f,posible);
-					if(result == 1) {
-						fighters.put(c, f);
-						return result;
-					} else {
-						return result;
-					}
-				} else {
-					return 0;
-				}
-			}
-		}
-		
- */
-		
-		
+		}		
+		return result;		
 	}
 	
 	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
+		Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
+		Fighter otherF;
+		
+		if(inside(f.getPosition())) {
+			
+			for(Coordinate c: neighbours) {
+				otherF = fighters.get(c);
+				if(otherF != null && !sonAmigos(f,otherF)) {
+					if(f.fight(otherF) == 1) {
+						f.getMotherShip().updateResults(1);
+						otherF.getMotherShip().updateResults(-1);
+						
+					} else {
+						f.getMotherShip().updateResults(-1);
+						otherF.getMotherShip().updateResults(1);
+					}
+				}
+			}
+			
+		}
 		
 	}
 }

@@ -116,7 +116,7 @@ public class Coordinate implements Comparable<Coordinate> {
  *  Se devuelven las posiciones marcadas por o.
  * @return vector de coordenadas vecinas
  */
-public Set getNeighborhood() {
+public Set<Coordinate> getNeighborhood() {
 		
 		Set<Coordinate> vecinas = new TreeSet<Coordinate>();
 		

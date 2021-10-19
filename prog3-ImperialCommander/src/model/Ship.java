@@ -135,7 +135,7 @@ public class Ship {
 		} else 
 			return false;
 		}
-	}
+	
 	
 	/**
 	 * Devuelve el primer fighter del tipo que nos pasen por parámetro que no esté destruido.
@@ -148,7 +148,10 @@ public class Ship {
 			if(isFighterValid(f,t))
 				return f;
 		}
+		return null;
 	}
+	
+
 			
 	
 	/**

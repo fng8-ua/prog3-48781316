@@ -125,7 +125,7 @@ public class Fighter {
 	/**
 	 * Resetea el siguiente id.
 	 */
-	public static void ResetNextId() {
+	public static void resetNextId() {
 		nextId = 1;
 	}
 	
@@ -258,7 +258,7 @@ public class Fighter {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + attack "," + velocity + "," + shield + "})")
+		str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + attack + "," + velocity + "," + shield + "})");  
 		return str.toString();
 	}
 	
@@ -296,6 +296,6 @@ public class Fighter {
 			}
 			
 		} while(!enemy.isDestroyed() && !isDestroyed());
+	return 0;
 	}
-	
 }
