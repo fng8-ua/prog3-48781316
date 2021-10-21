@@ -65,6 +65,9 @@ public class Board {
 		if(res == 1) {
 			nuestro.getMotherShip().updateResults(1);
 			enemigo.getMotherShip().updateResults(-1);
+		} else {
+			nuestro.getMotherShip().updateResults(-1);
+			enemigo.getMotherShip().updateResults(1);
 		}
 		
 		return res;
@@ -109,6 +112,8 @@ public class Board {
 				} else {
 					hay = false;
 				}
+			} else {
+				hay = false;
 			}
 		} else {
 			hay = false;
@@ -128,8 +133,8 @@ public class Board {
 	public int launch(Coordinate c, Fighter f) {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
-		Fighter otherF = fighters.get(c);
-		int result;
+		Fighter otherF;
+		int result = 0;
 		
 		/**
 		  -  Comprobamos si está vacío
@@ -142,9 +147,16 @@ public class Board {
 		if(!inside(c)) {
 			result = 0;
 		} else {
+			otherF = fighters.get(c);
 			if(otherF == null || sonAmigos(f,otherF)) {
-				result = 0;
-				fighters.put(c,f);
+				
+				if(otherF == null) {
+					result = 0;
+					fighters.put(c,f);
+				} else if(sonAmigos(f,otherF)) {
+					result = 0;
+				}
+				
 			} else {
 				result = batalla(f,otherF);
 				if(result == 1) {
@@ -157,6 +169,7 @@ public class Board {
 		return result;		
 	}
 	
+	
 	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
 		Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
@@ -165,20 +178,18 @@ public class Board {
 		if(inside(f.getPosition())) {
 			
 			for(Coordinate c: neighbours) {
-				otherF = fighters.get(c);
-				if(otherF != null && !sonAmigos(f,otherF)) {
-					if(f.fight(otherF) == 1) {
-						f.getMotherShip().updateResults(1);
-						otherF.getMotherShip().updateResults(-1);
-						
-					} else {
-						f.getMotherShip().updateResults(-1);
-						otherF.getMotherShip().updateResults(1);
+				
+				if(inside(c)) {
+					otherF = fighters.get(c);
+					if(otherF != null) {
+						if(!sonAmigos(f,otherF)) {
+							batalla(f,otherF);
+						}
 					}
-				}
+				} 
+				
 			}
-			
 		}
-		
+				
 	}
 }
