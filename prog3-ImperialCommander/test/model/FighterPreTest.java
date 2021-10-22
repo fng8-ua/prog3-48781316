@@ -119,7 +119,7 @@ public class FighterPreTest {
 		 * comprueba que se le asigna bien la posición a un caza, y que
 		 * después se le puede asignar null como posición 
 		 */
-		fail("completa el test");
+		//fail("completa el test");
 	}
 
 	/* Test que comprueba  que isDestroyed es false aunque

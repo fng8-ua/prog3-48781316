@@ -18,26 +18,45 @@ public class Board {
 		Objects.requireNonNull(c);
 		Fighter f = fighters.get(new Coordinate(c));
 		
-		return f;
+		if(f == null) {
+			return null;
+		} else {
+			return f;
+		}
 	}
+	
 	
 	
 
 	public int getSize() {return size;}
 	
-	public boolean removeFighter(Fighter f) {
-		Objects.requireNonNull(f);
-		Fighter aEliminar;
-		boolean borrado = false;
-		
-		aEliminar = fighters.get(f.getPosition());
-		
-		if(aEliminar.equals(f)) {
-			fighters.remove(f.getPosition());
-			borrado = true;
+	public boolean onBoard(Fighter f) {
+
+		if(f.getPosition() != null) {
+			return true;
+		} else {
+			return false;
 		}
 		
-		return borrado;
+	}
+	
+	public boolean removeFighter(Fighter f) {
+		Objects.requireNonNull(f);
+		
+		if(onBoard(f)) {
+			if(f.equals(fighters.get(f.getPosition()))) {
+				fighters.remove(f.getPosition());
+				return true;
+				
+			} else {
+				return false;
+			}			
+		} else {
+			return false;
+		}
+		
+		
+		
 	}
 	
 	public boolean inside(Coordinate c) {
@@ -74,7 +93,7 @@ public class Board {
 	}
 	
 	/**
-	 * Esta función dados dos cazas nos dice si son del mismo bando (son amigos), o si por el
+	 * Esta funciï¿½n dados dos cazas nos dice si son del mismo bando (son amigos), o si por el
 	 * contrario son de bandos distintos (enemigos).
 	 * 
 	 * @param f1
@@ -123,8 +142,8 @@ public class Board {
 	}
 	
 	/**
-	 * Coloca un fighter si la coordenada está vacía o si ganamos la batalla contra
-	 * el fighter enemigo que haya en esa posición.
+	 * Coloca un fighter si la coordenada estï¿½ vacï¿½a o si ganamos la batalla contra
+	 * el fighter enemigo que haya en esa posiciï¿½n.
 	 * 
 	 * @param c la coordenada
 	 * @param f fighter que queremos colocar
@@ -137,8 +156,8 @@ public class Board {
 		int result = 0;
 		
 		/**
-		  -  Comprobamos si está vacío
-		  -  Si no lo está comprobamos si tiene un caza de nuestro bando
+		  -  Comprobamos si estï¿½ vacï¿½o
+		  -  Si no lo estï¿½ comprobamos si tiene un caza de nuestro bando
 		  -  Si no lo es luchamos
 		 
 		 */
@@ -172,24 +191,34 @@ public class Board {
 	
 	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
-		Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
-		Fighter otherF;
 		
-		if(inside(f.getPosition())) {
+		if(onBoard(f)) {
+			Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
 			
-			for(Coordinate c: neighbours) {
+			if(inside(f.getPosition())) {
 				
-				if(inside(c)) {
-					otherF = fighters.get(c);
-					if(otherF != null) {
-						if(!sonAmigos(f,otherF)) {
-							batalla(f,otherF);
+				for(Coordinate c: neighbours) {
+					
+					if(inside(c)) {
+						Fighter otherF = fighters.get(c);
+						if(otherF != null) {
+							if(!sonAmigos(f,otherF)) {
+								if(batalla(f,otherF) == 1) {
+									removeFighter(otherF);
+								} else {
+									removeFighter(f);
+								}
+							}
 						}
-					}
-				} 
-				
+					} 
+					
+				}
 			}
 		}
+		
+		
+		
+		
 				
 	}
 }
