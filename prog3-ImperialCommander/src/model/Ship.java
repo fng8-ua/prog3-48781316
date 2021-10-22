@@ -39,6 +39,7 @@ public class Ship {
 		this.name = name;
 		this.side = side;
 		wins = losses = 0;
+		fleet = new ArrayList<Fighter>();
 	}
 	
 	/**
@@ -77,36 +78,36 @@ public class Ship {
 	public List<Fighter> getFleetTest() {return fleet;}
 	
 	/**
-	 * Añade un fighter a la nave a través de una cadena.
+	 * Aï¿½ade un fighter a la nave a travï¿½s de una cadena.
 	 *
 	 * @param cadena fd
 	 */
 	
 	public void addFighters(String fd) {
 		int numTipos;
-		String typeName;
 		
-		// LEER la cadena y separar la información cuando encuentra ":"
+		
+		// LEER la cadena y separar la informaciï¿½n cuando encuentra ":"
 		String[] fighters = fd.split(":");
 		
 		for(int i = 0; i < fighters.length; i++) {
 			
 			String[] partes = fighters[i].split("/");
-			// Ahora la primer elemento será el numTipos y el segundo será el nombre
+			// Ahora la primer elemento serï¿½ el numTipos y el segundo serï¿½ el nombre
 			
 			numTipos = Integer.parseInt(partes[0]);
-			typeName = partes[1];
 			
-			for(int j = 0; i < numTipos; j++) {
-				// Crear el numero de tipos indicado y lo añadimos a fleet
-				fleet.add(new Fighter(typeName,this));
+			
+			for(int j = 1; j <= numTipos; j++) {
+				// Crear el numero de tipos indicado y lo aï¿½adimos a fleet
+				fleet.add(new Fighter(partes[1],this));
 			}
 		}
 		
 	}
 	
 	/**
-	 * añade una victoria o una derrota según si r es 1  o -1 respectivamente
+	 * aï¿½ade una victoria o una derrota segï¿½n si r es 1  o -1 respectivamente
 	 *
 	 * @param r
 	 */
@@ -117,37 +118,23 @@ public class Ship {
 			losses++;
 	}
 	
+
 	/**
-	 * Comprueba que el fighter pasado no está destruido, y que si el tipo no está vació
-	 * 
-	 * @param ftr el fighter
-	 * @param type el tipo
-	 * @return true o false según si es valido o no
-	 */
-	public boolean isFighterValid(Fighter ftr, String type) {
-		
-		if(ftr.isDestroyed()) {
-			return false;
-		} else if(type.isEmpty()) {
-			return true;
-		} else if(ftr.getType() == type) {
-			return true;
-		} else 
-			return false;
-		}
-	
-	
-	/**
-	 * Devuelve el primer fighter del tipo que nos pasen por parámetro que no esté destruido.
+	 * Devuelve el primer fighter del tipo que nos pasen por parï¿½metro que no estï¿½ destruido.
 	 *
 	 * @param tipo de caza requerido
 	 * @return primer caza disponible
 	 */
 	public Fighter getFirstAvailableFighter(String t) {
-		for(Fighter f: fleet) {
-			if(isFighterValid(f,t))
-				return f;
-		}
+			
+			for(int i = 0; i < fleet.size(); i++) {
+				Fighter fighter = fleet.get(i);
+				if(t.isEmpty() || t.equals(fighter.getType())) {
+					return fighter;
+				}
+			}
+		
+		
 		return null;
 	}
 	
@@ -158,11 +145,15 @@ public class Ship {
 	 * Elimina los cazas destruidos.
 	 */
 	public void purgeFleet() {
+		ArrayList<Fighter> goodFleet = new ArrayList<Fighter>();
 		for(Fighter f: fleet) {
-			if(f.isDestroyed()) {
-				fleet.remove(f);
+			if(!f.isDestroyed()) {
+				goodFleet.add(f);
 			}
 		}
+		
+		fleet.clear();
+		fleet = goodFleet;
 	}
 	
 	/**
@@ -191,7 +182,7 @@ public class Ship {
 	}
 	
 	/**
-	 * Devuelve el número de cazas que hay de un tipo.
+	 * Devuelve el nï¿½mero de cazas que hay de un tipo.
 	 *
 	 * @param tipo que buscamos
 	 * @return numero de cazas de ese tipo en la flota

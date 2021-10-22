@@ -23,7 +23,7 @@ public class Coordinate implements Comparable<Coordinate> {
 	 * Compara dos coordenadas.
 	 *
 	 * @param otra coordenada
-	 * @return valor negativo o positivo según cual de las dos es más grande
+	 * @return valor negativo o positivo segï¿½n cual de las dos es mï¿½s grande
 	 */
 	@Override
 	public int compareTo(Coordinate otra) {
@@ -57,7 +57,7 @@ public class Coordinate implements Comparable<Coordinate> {
 		this.y = c.y;
 	}
 	
-	/**
+	/**vecinas.add(new Coordinate(x-1,y-1));
 	 * Devuelve la x.
 	 *
 	 * @return x
@@ -90,7 +90,7 @@ public class Coordinate implements Comparable<Coordinate> {
     }
 
     /**
-     * Suma a la coordenada una nueva coordenada pasada por parámetro.
+     * Suma a la coordenada una nueva coordenada pasada por parï¿½metro.
      *
      * @param coordenada a sumar
      * @return la nueva coordenada
@@ -122,16 +122,16 @@ public Set<Coordinate> getNeighborhood() {
 		
 		//Ahora tenemos que recorrer las 9 posiciones de la matriz alrededor de la coordenada
 		
-			
-		Coordinate aux = new Coordinate(x,y);
-		
-		for(int i = y-1; i <= y+1; i++) {
-			for(int j = x-1; j <= x+1; j++) {
-				if(j != aux.x && i != aux.y) {
-					vecinas.add(new Coordinate(j,i));
+		for(int j = this.y-1; j <= this.y + 1; j++) {
+			for(int i = this.x-1; i <= this.x + 1; i++) {
+				
+				if(i==x && j==y) {}
+				else {
+				vecinas.add(new Coordinate(i,j));
 				}
 			}
 		}
+		
 		
 		
 		return vecinas;
@@ -144,7 +144,7 @@ public Set<Coordinate> getNeighborhood() {
      */
     @Override
 	public String toString() {
-		return "[x" + x + ",y" + y + "]";
+		return "[" + x + "," + y + "]";
 	}
 
 	/**

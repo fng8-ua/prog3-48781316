@@ -84,10 +84,10 @@ public class Fighter {
 	/** Identificador del caza. */
 	private int id;
 	
-	/** Próximo identificador. */
+	/** Prï¿½ximo identificador. */
 	private static int nextId = 1;
 	
-	/** Posición del caza en el tablero. */
+	/** Posiciï¿½n del caza en el tablero. */
 	private Coordinate position;
 	
 	/** Nave a la que pertenece el caza. */
@@ -102,6 +102,7 @@ public class Fighter {
 	Fighter(String type, Ship mother) {
 		this.type = type;
 		id = nextId;
+		motherShip = mother;
 		
 		velocity = 100;
 		attack = 80;
@@ -120,6 +121,7 @@ public class Fighter {
 		velocity = f.velocity;
 		attack = f.attack;
 		shield = f.shield;
+		motherShip = f.getMotherShip();
 	}
 	
 	/**
@@ -165,16 +167,16 @@ public class Fighter {
 	public int getShield() {return shield;}
 	
 	/**
-	 * Devuelve el bando en el que está la nave del caza.
+	 * Devuelve el bando en el que estï¿½ la nave del caza.
 	 *
 	 * @return bando
 	 */
 	public Side getSide() {return motherShip.getSide();}
 	
 	/**
-	 * Devuelve la posición.
+	 * Devuelve la posiciï¿½n.
 	 *
-	 * @return posición
+	 * @return posiciï¿½n
 	 */
 	public Coordinate getPosition() {return position;}
 	
@@ -186,47 +188,46 @@ public class Fighter {
 	public Ship getMotherShip() {return motherShip;}
 	
 	/**
-	 * Darle una posición al caza
+	 * Darle una posiciï¿½n al caza
 	 *
 	 * @param la nueva posicion
 	 */
 	public void setPosition(Coordinate p) {
-		position = null;
+		position = p;
 		
-		position.add(p);
 	}
 	
 	/**
-	 * Añade el ataque al caza
+	 * Aï¿½ade el ataque al caza
 	 *
-	 * @param ataque que vamos añadir
+	 * @param ataque que vamos aï¿½adir
 	 */
 	public void addAttack(int at) {
 		attack += at;
 	}
 	
 	/**
-	 * Añade la velocidad al caza
+	 * Aï¿½ade la velocidad al caza
 	 *
-	 * @param velocidad a añadir
+	 * @param velocidad a aï¿½adir
 	 */
 	public void addVelocity(int vel) {
 		velocity += vel;
 	}
 	
 	/**
-	 * Añade escudo al caza.
+	 * Aï¿½ade escudo al caza.
 	 *
-	 * @param escudo a añadir
+	 * @param escudo a aï¿½adir
 	 */
 	public void addShield(int sh) {
 		shield += sh;
 	}
 	
 	/**
-	 * Comprueba si el caza está destruido.
+	 * Comprueba si el caza estï¿½ destruido.
 	 *
-	 * @return devuelve true si lo es´ta y false si no lo está (destruido)
+	 * @return devuelve true si lo esï¿½ta y false si no lo estï¿½ (destruido)
 	 */
 	public boolean isDestroyed() {
 		if(shield <= 0)
@@ -236,11 +237,11 @@ public class Fighter {
 	}
 	
 	/**
-	 * Devuelve el daño que va a causar al enemigo
+	 * Devuelve el daï¿½o que va a causar al enemigo
 	 *
 	 * @param n (numero aleatorio)
 	 * @param enemigo
-	 * @return daño provocado
+	 * @return daï¿½o provocado
 	 */
 	public int getDamage(int n, Fighter enemy) {
 		int damage;
@@ -258,7 +259,13 @@ public class Fighter {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + attack + "," + velocity + "," + shield + "})");  
+		
+		if(position == null) {
+			str.append("("+ type + " " + id + " " + motherShip.getSide() + " null " + "{" + attack + "," + velocity + "," + shield + "})");
+		} else {
+			str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + attack + "," + velocity + "," + shield + "})");  
+		}
+		
 		return str.toString();
 	}
 	
@@ -281,14 +288,14 @@ public class Fighter {
 			// Como se utiliza el randomNumber??
 			
 			if(umbral <= n) {
-				// el atacante será el caza
+				// el atacante serï¿½ el caza
 				enemy.addShield(-getDamage(n,this));
 				
 				if(enemy.isDestroyed())
 					return 1;
 				
 			} else {
-				// el atacante será el enemigo
+				// el atacante serï¿½ el enemigo
 				this.addShield(-getDamage(100-n,enemy));
 				
 				if(this.isDestroyed())
