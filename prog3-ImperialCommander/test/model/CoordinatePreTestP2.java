@@ -44,15 +44,14 @@ public class CoordinatePreTestP2 {
  	y mismo valor para la Y*/
 	@Test
 	public final void testCompareTo3() {
-		
-		//fail("completa el test");
+		fail("completa el test");
 	}
 	
 	/* Comprueba compareTo para dos coordenadas con mismo valor para la X 
  	y mismo valor para la Y*/
 	@Test
 	public final void testCompareTo5() {
-		//fail("completa el test");
+		fail("completa el test");
 	}
 	
 	/* Comprueba los vecinos a la coordenada [3,5] y que las Coordenadas
@@ -73,7 +72,7 @@ public class CoordinatePreTestP2 {
 	@Test
 	public final void testNeighborhood2() {
 		// completa el test, es similar al anterior, pero usando c2 y la cadena kNeighborhood2
-		//fail("completa el test");
+		fail("completa el test");
 	}
 
 }

@@ -144,7 +144,6 @@ public class ShipPreTest {
 	@Test
 	public void testGetFirstAvailableFighter3() {
 		ship.addFighters(kFleet1);
-		System.out.println(ship.getFleetTest());
 		destroy("YWing",3);
 		assertNull(ship.getFirstAvailableFighter("YWing"));
 	}
