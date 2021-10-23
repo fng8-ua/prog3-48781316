@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
 /**
  * La clase Ship.
  */
@@ -32,8 +33,8 @@ public class Ship {
 	/**
 	 * Crea una nueva nave.
 	 *
-	 * @param nombre de la nave
-	 * @param bando de la nave
+	 * @param name the name
+	 * @param side the side
 	 */
 	public Ship(String name, Side side) {
 		this.name = name;
@@ -43,7 +44,7 @@ public class Ship {
 	}
 	
 	/**
-	 * Devuelve el nombre
+	 * Devuelve el nombre.
 	 *
 	 * @return el nombre
 	 */
@@ -71,7 +72,7 @@ public class Ship {
 	public int getLosses() {return losses;}
 	
 	/**
-	 * Devuelve la flota
+	 * Devuelve la flota.
 	 *
 	 * @return flota
 	 */
@@ -80,7 +81,7 @@ public class Ship {
 	/**
 	 * A�ade un fighter a la nave a trav�s de una cadena.
 	 *
-	 * @param cadena fd
+	 * @param fd the fd
 	 */
 	
 	public void addFighters(String fd) {
@@ -107,9 +108,9 @@ public class Ship {
 	}
 	
 	/**
-	 * a�ade una victoria o una derrota seg�n si r es 1  o -1 respectivamente
+	 * a�ade una victoria o una derrota seg�n si r es 1  o -1 respectivamente.
 	 *
-	 * @param r
+	 * @param r the r
 	 */
 	public void updateResults(int r) {
 		if(r == 1)
@@ -122,18 +123,20 @@ public class Ship {
 	/**
 	 * Devuelve el primer fighter del tipo que nos pasen por par�metro que no est� destruido.
 	 *
-	 * @param tipo de caza requerido
+	 * @param t the t
 	 * @return primer caza disponible
 	 */
 	public Fighter getFirstAvailableFighter(String t) {
 			
-			for(int i = 0; i < fleet.size(); i++) {
+		
+		 boolean enc = false;
+			for(int i = 0; i < fleet.size() && !enc; i++) {
 				Fighter fighter = fleet.get(i);
-				if(t.isEmpty() || t.equals(fighter.getType())) {
+				if((t.isEmpty() || t.equals(fighter.getType())) && !fighter.isDestroyed()) {
+					enc = true;
 					return fighter;
 				}
 			}
-		
 		
 		return null;
 	}
@@ -157,7 +160,7 @@ public class Ship {
 	}
 	
 	/**
-	 * Muestra toda la flota de la nave
+	 * Muestra toda la flota de la nave.
 	 *
 	 * @return cadena en la que pone la flota
 	 */
@@ -169,7 +172,7 @@ public class Ship {
 				str.append(f.toString());
 				
 				if(f.isDestroyed()) {
-					str.append(" (X) ");
+					str.append(" (X)");
 				}
 				
 				str.append("\n");
@@ -184,7 +187,7 @@ public class Ship {
 	/**
 	 * Devuelve el n�mero de cazas que hay de un tipo.
 	 *
-	 * @param tipo que buscamos
+	 * @param type the type
 	 * @return numero de cazas de ese tipo en la flota
 	 */
 	public int sameType(String type) {
@@ -200,51 +203,46 @@ public class Ship {
 	}
 	
 	/**
-	 * Elimina repetidos de una string
+	 * Elimina repetidos de una string.
 	 *
-	 * @param cadena con los tipos que hay en flota
+	 * @param fleetCopy the fleet copy
 	 */ 
-	public void quitarRepetidosString(List<String> tipos) {
+	public void quitarRepetidos(ArrayList<Fighter> fleetCopy) {
 		
-		Set<String> hashSet = new HashSet<String>(tipos);
-		tipos.clear();
-		tipos.addAll(hashSet);
+		Set<Fighter> hashSet = new HashSet<Fighter>(fleetCopy);
+		fleetCopy.clear();
+		fleetCopy.addAll(hashSet);
 	}
 	
 	/**
-	 * Muestra un resumen de la flota
+	 * Muestra un resumen de la flota.
 	 *
 	 * @return cadena de resumen
 	 */
 	public String myFleet() {
 		StringBuilder str = new StringBuilder();
-		List<String> tipos = new ArrayList<String>();
+		ArrayList<Fighter> fleetCopy = new ArrayList<Fighter>();
 		
+		// Creamos una copia de fleet y le quitamos los repetidos
+		// Luego mostramos esa lista usando sameType
 		
-		purgeFleet();
+		fleetCopy = fleet;
+		quitarRepetidos(fleetCopy);
 		
-		// Guardamos los nombres de los tipos
-		for(Fighter f: fleet) {
-			tipos.add(f.getType());
-		}
-		
-		// Quitamos los repetidos
-		quitarRepetidosString(tipos);
-		
-		
-		Boolean primero = true;
-		
-		for(int i = 0; i < tipos.size(); i++) {
-			if(primero) {
-				primero = false;
-				str.append(sameType(tipos.get(i))+"/"+tipos.get(i));
+		boolean primera = true;
+		for(int i = 0; i < fleetCopy.size(); i++) {
+			if(primera) {
+				primera = false;
+				str.append(sameType(fleetCopy.get(i).getType()) + "/" + fleetCopy.get(i).getType());
+			} else {
+				str.append(":" + sameType(fleetCopy.get(i).getType()) + "/" + fleetCopy.get(i).getType());
 			}
 			
-			str.append(":"+sameType(tipos.get(i))+"/"+tipos.get(i));
-
 		}
 		
 		return str.toString();
+		
+
 }
 	
 	/**

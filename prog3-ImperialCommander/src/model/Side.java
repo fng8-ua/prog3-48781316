@@ -1,5 +1,13 @@
 package model;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum Side.
+ */
 public enum Side {
-	IMPERIAL,REBEL
+	
+	/** The imperial. */
+	IMPERIAL,
+/** The rebel. */
+REBEL
 }

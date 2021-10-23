@@ -91,13 +91,21 @@ public class FighterPreTest {
 	/* Test que comprueba addAttack */
 	@Test
 	public final void testAddAttack() {
-		fail("completa el test"); // similar al anterior
+		fighter.addAttack(20);
+		assertEquals (100, fighter.getAttack());
+		fighter.addAttack(-1000);
+		assertEquals (0, fighter.getAttack());
+		//fail("completa el test"); // similar al anterior
 	}
 
 	/* Test que comprueba addShield */
 	@Test
 	public final void testAddShield() {
-		fail("completa el test"); // similar a los anteriores, pero con alguna diferencia
+		 // similar a los anteriores, pero con alguna diferencia
+		fighter.addShield(20);
+		assertEquals (100, fighter.getShield());
+		fighter.addShield(-1000);
+		assertEquals (-900, fighter.getShield());
 	}
 
 	/* Test que coprueba el metodo setPosition y la relación de asociación con
@@ -146,7 +154,9 @@ public class FighterPreTest {
 		fighter.addShield(-80);
 		assertTrue(fighter.isDestroyed());
 		// prueba con valores negativos
-		fail("completa el test con valores negativos");
+		fighter.addShield(-90);
+		assertTrue(fighter.isDestroyed());
+		//fail("completa el test con valores negativos");
 	}
 
 	
@@ -180,6 +190,10 @@ public class FighterPreTest {
 	 */
 	@Test
 	public final void testToString1() {
+		
+		
+
+		
 		final String sout = "(XWing 1 REBEL null {100,80,80})";
 		assertEquals(sout, fighter.toString());
 	}
@@ -193,8 +207,14 @@ public class FighterPreTest {
 		 * cambia los valores de los atributos del fighter y comprueba 
 		 * que en toString se reflejan los cambios
 		 */
+		fighter.addAttack(10);
+		fighter.addVelocity(10);
+		fighter.addShield(10);
 		
-		fail("completa el test");
+		final String sout = "(XWing 1 REBEL null {110,90,90})";
+		assertEquals(sout, fighter.toString());
+		
+		//fail("completa el test");
 	}
 	
 	
@@ -218,7 +238,11 @@ public class FighterPreTest {
 		/*
 		 * similar al anterior, pero al revés
 		 */
-		fail("completa el test");
+		Fighter enemy = new Fighter("TIEFighter", imperialShip);
+		fighter.addShield(-150);
+		assertEquals(0,fighter.fight(enemy));
+		assertEquals(0,RandomNumber.getRandomNumberList().size());
+		//fail("completa el test");
 	}
 	
 	/* Test que combrueba Fight en la lucha entre un caza y un enemigo que tienen
@@ -241,7 +265,13 @@ public class FighterPreTest {
 		 * cambia algunos valores del caza (velocidad, ataque, escudo) y
 		 * comprueba que afectan a la lucha
 		 */
-		fail("completa el test");
+		Fighter enemy = new Fighter("TIEFighter", imperialShip);
+		fighter.addAttack(100);
+		fighter.addShield(100);
+		fighter.addVelocity(100);
+		assertEquals(1,fighter.fight(enemy));
+		//assertEquals("[85, 88, 47, 13, 54, 4, 34, 69]",RandomNumber.getRandomNumberList().toString());
+		//fail("completa el test");
 	}
 		
 	/* Test equals for Fighter

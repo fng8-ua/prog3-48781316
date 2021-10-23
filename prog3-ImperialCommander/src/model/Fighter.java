@@ -4,6 +4,7 @@
  */
 package model;
 
+// TODO: Auto-generated Javadoc
 /**
  * Clase Fighter.
  */
@@ -96,8 +97,8 @@ public class Fighter {
 	/**
 	 * Crea un nuevo fighter.
 	 *
-	 * @param tipo de caza
-	 * @param nave a la que pertenece
+	 * @param type the type
+	 * @param mother the mother
 	 */
 	Fighter(String type, Ship mother) {
 		this.type = type;
@@ -108,12 +109,13 @@ public class Fighter {
 		attack = 80;
 		shield = 80;
 		position = null;
+		nextId++;
 	}
 	
 	/**
 	 * Constructor de un fighter copiando otro.
 	 *
-	 * @param caza que se debe copiar.
+	 * @param f the f
 	 */
 	public Fighter(Fighter f) {
 		type = f.type;
@@ -121,7 +123,8 @@ public class Fighter {
 		velocity = f.velocity;
 		attack = f.attack;
 		shield = f.shield;
-		motherShip = f.getMotherShip();
+		motherShip = f.motherShip;
+		position = f.position;
 	}
 	
 	/**
@@ -153,7 +156,7 @@ public class Fighter {
 	public int getVelocity() {return velocity;}
 	
 	/**
-	 * Devuelve el ataque del caza
+	 * Devuelve el ataque del caza.
 	 *
 	 * @return ataque
 	 */
@@ -188,9 +191,9 @@ public class Fighter {
 	public Ship getMotherShip() {return motherShip;}
 	
 	/**
-	 * Darle una posici�n al caza
+	 * Darle una posici�n al caza.
 	 *
-	 * @param la nueva posicion
+	 * @param p the new position
 	 */
 	public void setPosition(Coordinate p) {
 		position = p;
@@ -198,27 +201,34 @@ public class Fighter {
 	}
 	
 	/**
-	 * A�ade el ataque al caza
+	 * A�ade el ataque al caza.
 	 *
-	 * @param ataque que vamos a�adir
+	 * @param at the at
 	 */
 	public void addAttack(int at) {
 		attack += at;
+		if((attack+at) < 0) {
+			attack = 0;
+		}
 	}
 	
 	/**
-	 * A�ade la velocidad al caza
+	 * A�ade la velocidad al caza.
 	 *
-	 * @param velocidad a a�adir
+	 * @param vel the vel
 	 */
 	public void addVelocity(int vel) {
 		velocity += vel;
+		if((velocity + vel) < 0) {
+			velocity = 0;
+		}
+		
 	}
 	
 	/**
 	 * A�ade escudo al caza.
 	 *
-	 * @param escudo a a�adir
+	 * @param sh the sh
 	 */
 	public void addShield(int sh) {
 		shield += sh;
@@ -237,10 +247,10 @@ public class Fighter {
 	}
 	
 	/**
-	 * Devuelve el da�o que va a causar al enemigo
+	 * Devuelve el da�o que va a causar al enemigo.
 	 *
 	 * @param n (numero aleatorio)
-	 * @param enemigo
+	 * @param enemy the enemy
 	 * @return da�o provocado
 	 */
 	public int getDamage(int n, Fighter enemy) {
@@ -261,9 +271,9 @@ public class Fighter {
 		StringBuilder str = new StringBuilder();
 		
 		if(position == null) {
-			str.append("("+ type + " " + id + " " + motherShip.getSide() + " null " + "{" + attack + "," + velocity + "," + shield + "})");
+			str.append("("+ type + " " + id + " " + motherShip.getSide() + " null " + "{" + velocity + "," + attack + "," + shield + "})");
 		} else {
-			str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + attack + "," + velocity + "," + shield + "})");  
+			str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + velocity + "," + attack + "," + shield + "})");  
 		}
 		
 		return str.toString();
@@ -272,7 +282,7 @@ public class Fighter {
 	/**
 	 * Dos cazas pelean hasta que uno de ellos es destruido por el otro.
 	 *
-	 * @param el enemigo
+	 * @param enemy the enemy
 	 * @return devuelve 1 si hemos ganado o -1 si hemos perdido
 	 */
 	public int fight(Fighter enemy) {

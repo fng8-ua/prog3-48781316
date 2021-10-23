@@ -5,31 +5,55 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Board.
+ */
 public class Board {
+	
+	/** The size. */
 	private int size;
+	
+	/** The fighters. */
 	private Map<Coordinate, Fighter> fighters;
 	
+	/**
+	 * Instantiates a new board.
+	 *
+	 * @param size the size
+	 */
 	public Board(int size) {
 		fighters = new HashMap<Coordinate,Fighter>();
 		this.size = size;
 	}
 	
+	/**
+	 * Gets the fighter.
+	 *
+	 * @param c the c
+	 * @return the fighter
+	 */
 	public Fighter getFighter(Coordinate c) {
 		Objects.requireNonNull(c);
-		Fighter f = fighters.get(new Coordinate(c));
-		
-		if(f == null) {
-			return null;
-		} else {
-			return f;
-		}
+			return fighters.get(c);	
 	}
 	
 	
 	
 
+	/**
+	 * Gets the size.
+	 *
+	 * @return the size
+	 */
 	public int getSize() {return size;}
 	
+	/**
+	 * On board.
+	 *
+	 * @param f the f
+	 * @return true, if successful
+	 */
 	public boolean onBoard(Fighter f) {
 
 		if(f.getPosition() != null) {
@@ -40,25 +64,32 @@ public class Board {
 		
 	}
 	
+	/**
+	 * Removes the fighter.
+	 *
+	 * @param f the f
+	 * @return true, if successful
+	 */
 	public boolean removeFighter(Fighter f) {
 		Objects.requireNonNull(f);
+		Coordinate c = f.getPosition();
+		boolean borrada = false;
 		
-		if(onBoard(f)) {
-			if(f.equals(fighters.get(f.getPosition()))) {
-				fighters.remove(f.getPosition());
-				return true;
-				
-			} else {
-				return false;
-			}			
-		} else {
-			return false;
+		if(c != null) {
+			if(fighters.get(c) != null && fighters.get(c).equals(f)){
+				fighters.remove(c);
+				borrada = true;
+			}
 		}
-		
-		
-		
+		return borrada;
 	}
 	
+	/**
+	 * Inside.
+	 *
+	 * @param c the c
+	 * @return true, if successful
+	 */
 	public boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);
 		
@@ -70,12 +101,25 @@ public class Board {
 		
 	}
 							
+	/**
+	 * Gets the neighborhood.
+	 *
+	 * @param c the c
+	 * @return the neighborhood
+	 */
 	public Set<Coordinate> getNeighborhood(Coordinate c){
 		Objects.requireNonNull(c);
 		return c.getNeighborhood();
 	}
 	
 
+/**
+ * Batalla.
+ *
+ * @param nuestro the nuestro
+ * @param enemigo the enemigo
+ * @return the int
+ */
 // Necesitamos un modulo que haga que dos cazas peleen y actualice las posiciones
 	public int batalla(Fighter nuestro, Fighter enemigo) {
 		int res;
@@ -95,9 +139,9 @@ public class Board {
 	/**
 	 * Esta funci�n dados dos cazas nos dice si son del mismo bando (son amigos), o si por el
 	 * contrario son de bandos distintos (enemigos).
-	 * 
-	 * @param f1
-	 * @param f2
+	 *
+	 * @param f1 the f 1
+	 * @param f2 the f 2
 	 * @return amigos
 	 */
 	public boolean sonAmigos(Fighter f1, Fighter f2) {
@@ -114,9 +158,9 @@ public class Board {
 	
 	/**
 	 * Nos dice si va a haber batalla o no queriendo colocar el caza en esa coordenada.
-	 * 
-	 * @param c
-	 * @param f
+	 *
+	 * @param c the c
+	 * @param f the f
 	 * @return hay
 	 */
 	public boolean hayBatalla(Coordinate c, Fighter f) {
@@ -144,10 +188,10 @@ public class Board {
 	/**
 	 * Coloca un fighter si la coordenada est� vac�a o si ganamos la batalla contra
 	 * el fighter enemigo que haya en esa posici�n.
-	 * 
+	 *
 	 * @param c la coordenada
 	 * @param f fighter que queremos colocar
-	 * @return
+	 * @return the int
 	 */
 	public int launch(Coordinate c, Fighter f) {
 		Objects.requireNonNull(c);
@@ -189,10 +233,16 @@ public class Board {
 	}
 	
 	
+	/**
+	 * Patrol.
+	 *
+	 * @param f the f
+	 */
 	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
 		
-		if(onBoard(f)) {
+		
+		  if(onBoard(f)) {
 			Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
 			
 			if(inside(f.getPosition())) {
@@ -215,8 +265,9 @@ public class Board {
 				}
 			}
 		}
+
 		
-		
+	
 		
 		
 				

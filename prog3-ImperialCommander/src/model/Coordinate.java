@@ -7,6 +7,7 @@ package model;
 import java.util.Set;
 import java.util.TreeSet;
 
+// TODO: Auto-generated Javadoc
 /**
  * La clase coordinate.
  */
@@ -39,8 +40,8 @@ public class Coordinate implements Comparable<Coordinate> {
 	/**
 	 * Crea una nueva coordenada.
 	 *
-	 * @param Coordenada X
-	 * @param Coordenada Y
+	 * @param x the x
+	 * @param y the y
 	 */
 	public Coordinate(int x, int y) {
 		this.x = x;
@@ -50,7 +51,7 @@ public class Coordinate implements Comparable<Coordinate> {
 	/**
 	 * Instancia una nueva coordenada copiando otra.
 	 *
-	 * @param la otra coordenada
+	 * @param c the c
 	 */
 	public Coordinate(Coordinate c) {
 		this.x = c.x;
@@ -78,8 +79,8 @@ public class Coordinate implements Comparable<Coordinate> {
     /**
      * Suma a la coordenada una nueva coordenada de la cual se pasan solo los valores.
      *
-     * @param Lo que se le va a sumar a x
-     * @param Lo que se le va a sumar a y
+     * @param x the x
+     * @param y the y
      * @return la nueva coordenada
      */
     public Coordinate add(int x, int y){
@@ -92,7 +93,7 @@ public class Coordinate implements Comparable<Coordinate> {
     /**
      * Suma a la coordenada una nueva coordenada pasada por par�metro.
      *
-     * @param coordenada a sumar
+     * @param c the c
      * @return la nueva coordenada
      */
     public Coordinate add(Coordinate c){

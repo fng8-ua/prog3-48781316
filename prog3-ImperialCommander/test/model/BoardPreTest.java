@@ -80,7 +80,10 @@ public class BoardPreTest {
 	 */
 	@Test
 	public void testRemoveFighter2() {
-		fail("completa el test");		
+		rebelShip.addFighters("1/ZWing");
+		Fighter fighter = rebelShip.getFleetTest().get(0);
+		assertFalse (board.removeFighter(fighter));
+		//fail("completa el test");		
 	}
 
 
@@ -94,6 +97,7 @@ public class BoardPreTest {
 		for (int i=0; i<board.getSize(); i++) {
 			c = new Coordinate(i,i);
 			Fighter fighter = board.getFighter(c);
+			//assertNotNull (fighter);
 			assertTrue (board.removeFighter(fighter));	
 			assertNull (board.getFighter(new Coordinate(i,i)));
 		}
@@ -120,8 +124,10 @@ public class BoardPreTest {
 	public void testInsideFalse() {
 		assertFalse (board.inside (new Coordinate(-1,0)));
 		// assertFalse ....
-		
-	    fail("completa el test");
+		assertFalse (board.inside (new Coordinate(0,-1)));
+		assertFalse (board.inside (new Coordinate(0,board.getSize()+1)));
+		assertFalse (board.inside (new Coordinate(board.getSize()+1,0)));
+	    //fail("completa el test");
 	}
 
 	/* Test getNeighborhood para la esquina superior izquierdo de un tablero */
