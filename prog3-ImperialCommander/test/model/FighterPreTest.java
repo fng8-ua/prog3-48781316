@@ -127,6 +127,12 @@ public class FighterPreTest {
 		 * comprueba que se le asigna bien la posición a un caza, y que
 		 * después se le puede asignar null como posición 
 		 */
+		Coordinate coordinate = new Coordinate(3, 8);
+		fighter.setPosition(coordinate);
+		assertEquals (coordinate, fighter.getPosition());
+		
+		fighter.setPosition(null);
+		assertNull(null,fighter.getPosition());
 		//fail("completa el test");
 	}
 
@@ -155,6 +161,8 @@ public class FighterPreTest {
 		assertTrue(fighter.isDestroyed());
 		// prueba con valores negativos
 		fighter.addShield(-90);
+		assertTrue(fighter.isDestroyed());
+		fighter.addShield(0);
 		assertTrue(fighter.isDestroyed());
 		//fail("completa el test con valores negativos");
 	}
@@ -213,6 +221,13 @@ public class FighterPreTest {
 		
 		final String sout = "(XWing 1 REBEL null {110,90,90})";
 		assertEquals(sout, fighter.toString());
+		
+		fighter.addAttack(10);
+		fighter.addVelocity(10);
+		fighter.addShield(10);
+		
+		final String sout2 = "(XWing 1 REBEL null {120,100,100})";
+		assertEquals(sout2, fighter.toString());
 		
 		//fail("completa el test");
 	}

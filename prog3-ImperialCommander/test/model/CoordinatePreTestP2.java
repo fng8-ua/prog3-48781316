@@ -46,7 +46,9 @@ public class CoordinatePreTestP2 {
  	y mismo valor para la Y*/
 	@Test
 	public final void testCompareTo3() {
-		
+		c2 = new Coordinate(0,5);
+		assertTrue (c1.compareTo(c2)>0);
+		assertTrue (c2.compareTo(c1)<0);
 	}
 	
 	/* Comprueba compareTo para dos coordenadas con mismo valor para la X 

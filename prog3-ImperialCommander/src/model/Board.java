@@ -15,7 +15,7 @@ public class Board {
 	private int size;
 	
 	/** The fighters. */
-	private Map<Coordinate, Fighter> fighters;
+	private Map<Coordinate, Fighter> board;
 	
 	/**
 	 * Instantiates a new board.
@@ -23,7 +23,7 @@ public class Board {
 	 * @param size the size
 	 */
 	public Board(int size) {
-		fighters = new HashMap<Coordinate,Fighter>();
+		board = new HashMap<Coordinate,Fighter>();
 		this.size = size;
 	}
 	
@@ -35,7 +35,13 @@ public class Board {
 	 */
 	public Fighter getFighter(Coordinate c) {
 		Objects.requireNonNull(c);
-			return fighters.get(c);	
+			Fighter f = null;
+			
+			if(board.containsKey(c)) {
+				f = board.get(c);
+				f = new Fighter(board.get(c));
+			}			
+			return f;
 	}
 	
 	
@@ -72,12 +78,13 @@ public class Board {
 	 */
 	public boolean removeFighter(Fighter f) {
 		Objects.requireNonNull(f);
+		
 		Coordinate c = f.getPosition();
 		boolean borrada = false;
 		
 		if(c != null) {
-			if(fighters.get(c) != null && fighters.get(c).equals(f)){
-				fighters.remove(c);
+			if(board.get(c) != null && board.get(c).equals(f)){
+				board.remove(c);
 				borrada = true;
 			}
 		}
@@ -93,7 +100,7 @@ public class Board {
 	public boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);
 		
-		if((c.getX() > 0 && c.getX() < size-1) && (c.getY() > 0 && c.getY() < size-1)) {
+		if((c.getX() >= 0 && c.getX() <= size-1) && (c.getY() >= 0 && c.getY() <= size-1)) {
 			return true;
 		} else {
 			return false;
@@ -125,13 +132,10 @@ public class Board {
 		int res;
 		
 		res = nuestro.fight(enemigo);
-		if(res == 1) {
-			nuestro.getMotherShip().updateResults(1);
-			enemigo.getMotherShip().updateResults(-1);
-		} else {
-			nuestro.getMotherShip().updateResults(-1);
-			enemigo.getMotherShip().updateResults(1);
-		}
+		
+			nuestro.getMotherShip().updateResults(res);
+			enemigo.getMotherShip().updateResults(-res);
+		
 		
 		return res;
 	}
@@ -168,7 +172,7 @@ public class Board {
 		boolean hay = false;
 		
 		if(inside(c)) {
-			otro = fighters.get(c);
+			otro = board.get(c);
 			if(otro != null) {
 				if(!sonAmigos(f,otro)) {
 					hay = true;
@@ -196,7 +200,7 @@ public class Board {
 	public int launch(Coordinate c, Fighter f) {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
-		Fighter otherF;
+		Fighter enemy;
 		int result = 0;
 		
 		/**
@@ -210,26 +214,27 @@ public class Board {
 		if(!inside(c)) {
 			result = 0;
 		} else {
-			otherF = fighters.get(c);
-			if(otherF == null || sonAmigos(f,otherF)) {
+			if(board.containsKey(c)) {
+				enemy = board.get(c);
 				
-				if(otherF == null) {
-					result = 0;
-					fighters.put(c,f);
-				} else if(sonAmigos(f,otherF)) {
-					result = 0;
+				if(!sonAmigos(f,enemy)) {
+					result = batalla(f,enemy);
+					
+					if(result == 1) {
+						board.put(c,f);
+						f.setPosition(c);
+						enemy.setPosition(null);
+					}
 				}
-				
 			} else {
-				result = batalla(f,otherF);
-				if(result == 1) {
-					fighters.put(c,f);
-				} else {
-					fighters.put(c,otherF);
-				}
+				board.put(c,f);
+				f.setPosition(c);
+				
 			}
-		}		
-		return result;		
+		}
+		
+		return result;
+	
 	}
 	
 	
@@ -240,36 +245,34 @@ public class Board {
 	 */
 	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
+		Coordinate pos = f.getPosition();
+		Fighter enemy;
+		Set<Coordinate> neighbours;
+		int res;
 		
-		
-		  if(onBoard(f)) {
-			Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
+		if(pos != null) {
+			Fighter nuestro = board.get(pos);
 			
-			if(inside(f.getPosition())) {
+			if(nuestro == f) {
+				neighbours = getNeighborhood(pos);
 				
 				for(Coordinate c: neighbours) {
+					enemy = board.get(c);
 					
-					if(inside(c)) {
-						Fighter otherF = fighters.get(c);
-						if(otherF != null) {
-							if(!sonAmigos(f,otherF)) {
-								if(batalla(f,otherF) == 1) {
-									removeFighter(otherF);
-								} else {
-									removeFighter(f);
-								}
-							}
+					if(enemy != null && !sonAmigos(f,enemy)) {
+						res = batalla(f,enemy);
+						
+						if(res == 1) {
+							board.remove(c);
+							enemy.setPosition(null);
+						} else {
+							board.remove(pos);
+							f.setPosition(null);
+							break;
 						}
-					} 
-					
+					}
 				}
 			}
 		}
-
-		
-	
-		
-		
-				
 	}
 }
