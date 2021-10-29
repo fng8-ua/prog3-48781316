@@ -28,7 +28,7 @@ public class Ship {
 	private int losses;
 	
 	/** Flota de cazas de la nave. */
-	private ArrayList<Fighter> fleet;
+	private ArrayList<Fighter_prac2> fleet;
 	
 	/**
 	 * Crea una nueva nave.
@@ -40,7 +40,7 @@ public class Ship {
 		this.name = name;
 		this.side = side;
 		wins = losses = 0;
-		fleet = new ArrayList<Fighter>();
+		fleet = new ArrayList<Fighter_prac2>();
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class Ship {
 	 *
 	 * @return flota
 	 */
-	public List<Fighter> getFleetTest() {return fleet;}
+	public List<Fighter_prac2> getFleetTest() {return fleet;}
 	
 	/**
 	 * A�ade un fighter a la nave a trav�s de una cadena.
@@ -101,7 +101,7 @@ public class Ship {
 			
 			for(int j = 1; j <= numTipos; j++) {
 				// Crear el numero de tipos indicado y lo a�adimos a fleet
-				fleet.add(new Fighter(partes[1],this));
+				fleet.add(new Fighter_prac2(partes[1],this));
 			}
 		}
 		
@@ -126,12 +126,12 @@ public class Ship {
 	 * @param t the t
 	 * @return primer caza disponible
 	 */
-	public Fighter getFirstAvailableFighter(String t) {
+	public Fighter_prac2 getFirstAvailableFighter(String t) {
 			
 		
 		 boolean enc = false;
 			for(int i = 0; i < fleet.size() && !enc; i++) {
-				Fighter fighter = fleet.get(i);
+				Fighter_prac2 fighter = fleet.get(i);
 				if((t.isEmpty() || t.equals(fighter.getType())) && !fighter.isDestroyed()) {
 					enc = true;
 					return fighter;
@@ -148,8 +148,8 @@ public class Ship {
 	 * Elimina los cazas destruidos.
 	 */
 	public void purgeFleet() {
-		ArrayList<Fighter> goodFleet = new ArrayList<Fighter>();
-		for(Fighter f: fleet) {
+		ArrayList<Fighter_prac2> goodFleet = new ArrayList<Fighter_prac2>();
+		for(Fighter_prac2 f: fleet) {
 			if(!f.isDestroyed()) {
 				goodFleet.add(f);
 			}
@@ -168,7 +168,7 @@ public class Ship {
 		StringBuilder str = new StringBuilder();
 		
 		if(!fleet.isEmpty()) {
-			for(Fighter f: fleet) {
+			for(Fighter_prac2 f: fleet) {
 				str.append(f.toString());
 				
 				if(f.isDestroyed()) {
@@ -193,7 +193,7 @@ public class Ship {
 	public int sameType(String type) {
 		int counter = 0;
 		
-		for(Fighter f: fleet) {
+		for(Fighter_prac2 f: fleet) {
 			if(f.getType() == type) {
 				counter++;
 			}
@@ -207,9 +207,9 @@ public class Ship {
 	 *
 	 * @param fleetCopy the fleet copy
 	 */ 
-	public void quitarRepetidos(ArrayList<Fighter> fleetCopy) {
+	public void quitarRepetidos(ArrayList<Fighter_prac2> fleetCopy) {
 		
-		Set<Fighter> hashSet = new HashSet<Fighter>(fleetCopy);
+		Set<Fighter_prac2> hashSet = new HashSet<Fighter_prac2>(fleetCopy);
 		fleetCopy.clear();
 		fleetCopy.addAll(hashSet);
 	}
@@ -221,7 +221,7 @@ public class Ship {
 	 */
 	public String myFleet() {
 		StringBuilder str = new StringBuilder();
-		ArrayList<Fighter> fleetCopy = new ArrayList<Fighter>();
+		ArrayList<Fighter_prac2> fleetCopy = new ArrayList<Fighter_prac2>();
 		
 		// Creamos una copia de fleet y le quitamos los repetidos
 		// Luego mostramos esa lista usando sameType

@@ -8,8 +8,12 @@ package model;
 /**
  * Clase Fighter.
  */
-public class Fighter {
+public abstract class Fighter {
 
+	
+	public abstract Fighter copy();
+	public abstract char getSymbol();
+	
 	/**
 	 * Hash code.
 	 *
@@ -24,7 +28,7 @@ public class Fighter {
 		result = prime * result + ((motherShip == null) ? 0 : motherShip.hashCode());
 		result = prime * result + ((position == null) ? 0 : position.hashCode());
 		result = prime * result + shield;
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
 		result = prime * result + velocity;
 		return result;
 	}
@@ -60,10 +64,10 @@ public class Fighter {
 			return false;
 		if (shield != other.shield)
 			return false;
-		if (type == null) {
-			if (other.type != null)
+		if (getType() == null) {
+			if (other.getType() != null)
 				return false;
-		} else if (!type.equals(other.type))
+		} else if (!getType().equals(other.getType()))
 			return false;
 		if (velocity != other.velocity)
 			return false;
@@ -71,7 +75,7 @@ public class Fighter {
 	}
 
 	/** Tipo del caza. */
-	private String type;
+	// DESAPARECE
 	
 	/** Velocidad del caza. */
 	private int velocity;
@@ -100,8 +104,8 @@ public class Fighter {
 	 * @param type the type
 	 * @param mother the mother
 	 */
-	Fighter(String type, Ship mother) {
-		this.type = type;
+	protected Fighter(Ship mother) {
+
 		id = nextId;
 		motherShip = mother;
 		
@@ -117,8 +121,8 @@ public class Fighter {
 	 *
 	 * @param f the f
 	 */
-	public Fighter(Fighter f) {
-		type = f.type;
+	protected Fighter(Fighter f) {
+		
 		id = f.id;
 		velocity = f.velocity;
 		attack = f.attack;
@@ -139,7 +143,9 @@ public class Fighter {
 	 *
 	 * @return el tipo
 	 */
-	public String getType() {return type;}
+	public String getType() {
+		return getClass().getSimpleName();
+	}
 	
 	/**
 	 * Devuelve el id.
@@ -271,9 +277,9 @@ public class Fighter {
 		StringBuilder str = new StringBuilder();
 		
 		if(position == null) {
-			str.append("("+ type + " " + id + " " + motherShip.getSide() + " null " + "{" + velocity + "," + attack + "," + shield + "})");
+			str.append("("+ getType() + " " + id + " " + motherShip.getSide() + " null " + "{" + velocity + "," + attack + "," + shield + "})");
 		} else {
-			str.append("("+ type + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + velocity + "," + attack + "," + shield + "})");  
+			str.append("("+ getType() + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + velocity + "," + attack + "," + shield + "})");  
 		}
 		
 		return str.toString();

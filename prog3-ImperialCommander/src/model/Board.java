@@ -15,7 +15,7 @@ public class Board {
 	private int size;
 	
 	/** The fighters. */
-	private Map<Coordinate, Fighter> board;
+	private Map<Coordinate, Fighter_prac2> board;
 	
 	/**
 	 * Instantiates a new board.
@@ -23,7 +23,7 @@ public class Board {
 	 * @param size the size
 	 */
 	public Board(int size) {
-		board = new HashMap<Coordinate,Fighter>();
+		board = new HashMap<Coordinate,Fighter_prac2>();
 		this.size = size;
 	}
 	
@@ -33,13 +33,13 @@ public class Board {
 	 * @param c the c
 	 * @return the fighter
 	 */
-	public Fighter getFighter(Coordinate c) {
+	public Fighter_prac2 getFighter(Coordinate c) {
 		Objects.requireNonNull(c);
-			Fighter f = null;
+			Fighter_prac2 f = null;
 			
 			if(board.containsKey(c)) {
 				f = board.get(c);
-				f = new Fighter(board.get(c));
+				f = new Fighter_prac2(board.get(c));
 			}			
 			return f;
 	}
@@ -60,7 +60,7 @@ public class Board {
 	 * @param f the f
 	 * @return true, if successful
 	 */
-	public boolean onBoard(Fighter f) {
+	public boolean onBoard(Fighter_prac2 f) {
 
 		if(f.getPosition() != null) {
 			return true;
@@ -76,7 +76,7 @@ public class Board {
 	 * @param f the f
 	 * @return true, if successful
 	 */
-	public boolean removeFighter(Fighter f) {
+	public boolean removeFighter(Fighter_prac2 f) {
 		Objects.requireNonNull(f);
 		
 		Coordinate c = f.getPosition();
@@ -128,7 +128,7 @@ public class Board {
  * @return the int
  */
 // Necesitamos un modulo que haga que dos cazas peleen y actualice las posiciones
-	public int batalla(Fighter nuestro, Fighter enemigo) {
+	public int batalla(Fighter_prac2 nuestro, Fighter_prac2 enemigo) {
 		int res;
 		
 		res = nuestro.fight(enemigo);
@@ -148,7 +148,7 @@ public class Board {
 	 * @param f2 the f 2
 	 * @return amigos
 	 */
-	public boolean sonAmigos(Fighter f1, Fighter f2) {
+	public boolean sonAmigos(Fighter_prac2 f1, Fighter_prac2 f2) {
 		boolean amigos;
 		
 		if(f1.getMotherShip().getSide() == f2.getMotherShip().getSide()) {
@@ -167,8 +167,8 @@ public class Board {
 	 * @param f the f
 	 * @return hay
 	 */
-	public boolean hayBatalla(Coordinate c, Fighter f) {
-		Fighter otro;
+	public boolean hayBatalla(Coordinate c, Fighter_prac2 f) {
+		Fighter_prac2 otro;
 		boolean hay = false;
 		
 		if(inside(c)) {
@@ -197,10 +197,10 @@ public class Board {
 	 * @param f fighter que queremos colocar
 	 * @return the int
 	 */
-	public int launch(Coordinate c, Fighter f) {
+	public int launch(Coordinate c, Fighter_prac2 f) {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
-		Fighter enemy;
+		Fighter_prac2 enemy;
 		int result = 0;
 		
 		/**
@@ -243,15 +243,15 @@ public class Board {
 	 *
 	 * @param f the f
 	 */
-	public void patrol(Fighter f) {
+	public void patrol(Fighter_prac2 f) {
 		Objects.requireNonNull(f);
 		Coordinate pos = f.getPosition();
-		Fighter enemy;
+		Fighter_prac2 enemy;
 		Set<Coordinate> neighbours;
 		int res;
 		
 		if(pos != null) {
-			Fighter nuestro = board.get(pos);
+			Fighter_prac2 nuestro = board.get(pos);
 			
 			if(nuestro == f) {
 				neighbours = getNeighborhood(pos);
