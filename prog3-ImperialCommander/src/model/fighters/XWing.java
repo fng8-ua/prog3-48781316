@@ -17,4 +17,9 @@ public class XWing extends Fighter{
 		return 'X';
 	}
 	
+	@Override
+	public Fighter copy() {
+		return new XWing(this.getMotherShip());
+	}
+	
 }

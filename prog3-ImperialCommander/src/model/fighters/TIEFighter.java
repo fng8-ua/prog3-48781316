@@ -17,5 +17,9 @@ public class TIEFighter extends Fighter{
 		return 'f';
 	}
 	
+	@Override
+	public Fighter copy() {
+		return new TIEFighter(this.getMotherShip());
+	}
 	
 }

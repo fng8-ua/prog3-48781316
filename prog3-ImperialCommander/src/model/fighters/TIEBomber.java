@@ -17,5 +17,24 @@ public class TIEBomber extends Fighter{
 		return 'b';
 	}
 	
+	@Override
+	public Fighter copy() {
+		return new TIEBomber(this.getMotherShip());
+	}
+	
+	@Override
+	public int getDamage(int n, Fighter enemy) {
+		int damage;
+		
+		damage = (n*this.getAttack())/300;
+		
+		if(enemy.getSymbol() == 'X' || enemy.getSymbol() == 'Y') {
+			damage = damage/2;
+		} else if(enemy.getSymbol() == 'A') {
+			damage = damage/3;
+		}
+		
+		return damage;
+	}
 	
 }

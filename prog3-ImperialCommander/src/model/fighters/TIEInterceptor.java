@@ -17,5 +17,24 @@ public class TIEInterceptor extends Fighter{
 		return 'i';
 	}
 	
+	@Override
+	public Fighter copy() {
+		return new TIEInterceptor(this.getMotherShip());
+	}
+	
+	@Override
+	public int getDamage(int n, Fighter enemy) {
+		int damage;
+		
+		damage = (n*this.getAttack())/300;
+		
+		if(enemy.getSymbol() == 'Y') {
+			damage = damage*2;
+		} else if(enemy.getSymbol() == 'A') {
+			damage = damage/2;
+		}
+		
+		return damage;
+	}
 	
 }

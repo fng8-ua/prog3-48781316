@@ -17,5 +17,23 @@ public class AWing extends Fighter{
 		return 'A';
 	}
 	
+	@Override
+	public Fighter copy() {
+		return new AWing(this.getMotherShip());
+	}
+	
+	@Override
+	public int getDamage(int n, Fighter enemy) {
+		int damage;
+		
+		damage = (n*this.getAttack())/300;
+		
+		if(enemy.getSymbol() == 'b') {
+			damage = damage*2;
+		}
+		
+		return damage;
+	}
+	
 	
 }
