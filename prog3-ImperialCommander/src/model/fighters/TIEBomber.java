@@ -5,11 +5,15 @@ import model.Ship;
 
 public class TIEBomber extends Fighter{
 
-	protected TIEBomber(Ship mother) {
+	public TIEBomber(Ship mother) {
 		super(mother);
 		addVelocity(-30);
 		addAttack(-50);
 		addShield(35);
+	}
+	
+	private TIEBomber(TIEBomber f) {
+		super(f);
 	}
 
 	@Override
@@ -19,7 +23,7 @@ public class TIEBomber extends Fighter{
 	
 	@Override
 	public Fighter copy() {
-		return new TIEBomber(this.getMotherShip());
+		return new TIEBomber(this);
 	}
 	
 	@Override

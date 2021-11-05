@@ -5,11 +5,15 @@ import model.Ship;
 
 public class AWing extends Fighter{
 
-	protected AWing(Ship mother) {
+	public AWing(Ship mother) {
 		super(mother);
 		addVelocity(40);
 		addAttack(5);
 		addShield(-50);
+	}
+	
+	private AWing(AWing f) {
+		super(f);
 	}
 
 	@Override
@@ -19,7 +23,7 @@ public class AWing extends Fighter{
 	
 	@Override
 	public Fighter copy() {
-		return new AWing(this.getMotherShip());
+		return new AWing(this);
 	}
 	
 	@Override

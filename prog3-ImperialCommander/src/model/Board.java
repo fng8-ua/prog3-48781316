@@ -5,6 +5,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+//import model.FighterFactory;
+import model.exceptions.FighterIsDestroyedException;
+import model.exceptions.InvalidSizeException;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Board.
@@ -15,15 +19,19 @@ public class Board {
 	private int size;
 	
 	/** The fighters. */
-	private Map<Coordinate, Fighter_prac2> board;
+	private Map<Coordinate, Fighter> board;
 	
 	/**
 	 * Instantiates a new board.
 	 *
 	 * @param size the size
+	 * @throws InvalidSizeException 
 	 */
-	public Board(int size) {
-		board = new HashMap<Coordinate,Fighter_prac2>();
+	public Board(int size) throws InvalidSizeException {
+		if(size < 5) {
+			throw new InvalidSizeException(size);
+		}
+		board = new HashMap<Coordinate,Fighter>();
 		this.size = size;
 	}
 	
@@ -33,15 +41,15 @@ public class Board {
 	 * @param c the c
 	 * @return the fighter
 	 */
-	public Fighter_prac2 getFighter(Coordinate c) {
+	public Fighter getFighter(Coordinate c) {
 		Objects.requireNonNull(c);
-			Fighter_prac2 f = null;
+			Fighter f = null;
 			
 			if(board.containsKey(c)) {
 				f = board.get(c);
-				f = new Fighter_prac2(board.get(c));
+				return f.copy();
 			}			
-			return f;
+			return null;
 	}
 	
 	
@@ -60,7 +68,7 @@ public class Board {
 	 * @param f the f
 	 * @return true, if successful
 	 */
-	public boolean onBoard(Fighter_prac2 f) {
+	public boolean onBoard(Fighter f) {
 
 		if(f.getPosition() != null) {
 			return true;
@@ -76,7 +84,7 @@ public class Board {
 	 * @param f the f
 	 * @return true, if successful
 	 */
-	public boolean removeFighter(Fighter_prac2 f) {
+	public boolean removeFighter(Fighter f) {
 		Objects.requireNonNull(f);
 		
 		Coordinate c = f.getPosition();
@@ -128,10 +136,14 @@ public class Board {
  * @return the int
  */
 // Necesitamos un modulo que haga que dos cazas peleen y actualice las posiciones
-	public int batalla(Fighter_prac2 nuestro, Fighter_prac2 enemigo) {
+	public int batalla(Fighter nuestro, Fighter enemigo) {
 		int res;
+		try {
+			res = nuestro.fight(enemigo);
+		} catch(FighterIsDestroyedException e) {
+			throw new RuntimeException();
+		}
 		
-		res = nuestro.fight(enemigo);
 		
 			nuestro.getMotherShip().updateResults(res);
 			enemigo.getMotherShip().updateResults(-res);
@@ -148,7 +160,7 @@ public class Board {
 	 * @param f2 the f 2
 	 * @return amigos
 	 */
-	public boolean sonAmigos(Fighter_prac2 f1, Fighter_prac2 f2) {
+	public boolean sonAmigos(Fighter f1, Fighter f2) {
 		boolean amigos;
 		
 		if(f1.getMotherShip().getSide() == f2.getMotherShip().getSide()) {
@@ -167,8 +179,8 @@ public class Board {
 	 * @param f the f
 	 * @return hay
 	 */
-	public boolean hayBatalla(Coordinate c, Fighter_prac2 f) {
-		Fighter_prac2 otro;
+	public boolean hayBatalla(Coordinate c, Fighter f) {
+		Fighter otro;
 		boolean hay = false;
 		
 		if(inside(c)) {
@@ -197,10 +209,10 @@ public class Board {
 	 * @param f fighter que queremos colocar
 	 * @return the int
 	 */
-	public int launch(Coordinate c, Fighter_prac2 f) {
+	public int launch(Coordinate c, Fighter f) {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
-		Fighter_prac2 enemy;
+		Fighter enemy;
 		int result = 0;
 		
 		/**
@@ -243,15 +255,15 @@ public class Board {
 	 *
 	 * @param f the f
 	 */
-	public void patrol(Fighter_prac2 f) {
+	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
 		Coordinate pos = f.getPosition();
-		Fighter_prac2 enemy;
+		Fighter enemy;
 		Set<Coordinate> neighbours;
 		int res;
 		
 		if(pos != null) {
-			Fighter_prac2 nuestro = board.get(pos);
+			Fighter nuestro = board.get(pos);
 			
 			if(nuestro == f) {
 				neighbours = getNeighborhood(pos);

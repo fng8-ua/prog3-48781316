@@ -4,6 +4,8 @@
  */
 package model;
 
+import model.exceptions.FighterIsDestroyedException;
+
 // TODO: Auto-generated Javadoc
 /**
  * Clase Fighter.
@@ -290,10 +292,18 @@ public abstract class Fighter {
 	 *
 	 * @param enemy the enemy
 	 * @return devuelve 1 si hemos ganado o -1 si hemos perdido
+	 * @throws lanza la excepcion FighterIsDestroyedException si uno de los fighters que van a luchar está destruido
 	 */
-	public int fight(Fighter enemy) {
-		if(shield <= 0 || enemy.isDestroyed())
+	public int fight(Fighter enemy) throws FighterIsDestroyedException{
+		if(shield <= 0 || enemy.isDestroyed()) {
+			if(enemy.isDestroyed()) {
+				throw new FighterIsDestroyedException(enemy);
+			} else if(this.isDestroyed()) {
+				throw new FighterIsDestroyedException(this);
+			}
 			return 0;
+		}
+			
 		
 		int n;
 		int umbral;
