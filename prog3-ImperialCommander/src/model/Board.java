@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 //import model.FighterFactory;
 import model.exceptions.FighterIsDestroyedException;
@@ -124,7 +125,19 @@ public class Board {
 	 */
 	public Set<Coordinate> getNeighborhood(Coordinate c){
 		Objects.requireNonNull(c);
-		return c.getNeighborhood();
+		
+		TreeSet<Coordinate> neighborhoodTS = new TreeSet<Coordinate>();
+		Set<Coordinate> neighborhood = c.getNeighborhood();
+		
+		for(Coordinate cor: neighborhood) {
+			if(inside(cor)) {
+				neighborhoodTS.add(cor);
+			}
+		}
+		
+		
+		
+		return neighborhoodTS;
 	}
 	
 

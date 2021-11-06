@@ -295,7 +295,7 @@ public abstract class Fighter {
 	 * @throws lanza la excepcion FighterIsDestroyedException si uno de los fighters que van a luchar está destruido
 	 */
 	public int fight(Fighter enemy) throws FighterIsDestroyedException{
-		if(shield <= 0 || enemy.isDestroyed()) {
+		if(this.isDestroyed() || enemy.isDestroyed()) {
 			if(enemy.isDestroyed()) {
 				throw new FighterIsDestroyedException(enemy);
 			} else if(this.isDestroyed()) {
@@ -311,17 +311,15 @@ public abstract class Fighter {
 			n = RandomNumber.newRandomNumber(100);
 			umbral = (100*velocity)/(enemy.getVelocity() + velocity);
 			
-			// Como se utiliza el randomNumber??
-			
 			if(umbral <= n) {
-				// el atacante ser� el caza
+				// el atacante sera el caza
 				enemy.addShield(-getDamage(n,this));
 				
 				if(enemy.isDestroyed())
 					return 1;
 				
 			} else {
-				// el atacante ser� el enemigo
+				// el atacante sera el enemigo
 				this.addShield(-getDamage(100-n,enemy));
 				
 				if(this.isDestroyed())
