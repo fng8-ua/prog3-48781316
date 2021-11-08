@@ -7,9 +7,9 @@ public class TIEInterceptor extends Fighter{
 
 	public TIEInterceptor(Ship mother) {
 		super(mother);
-		addVelocity(40);
+		addVelocity(45);
 		addAttack(5);
-		addShield(-50);
+		addShield(-20);
 	}
 	
 	private TIEInterceptor(TIEInterceptor f) {

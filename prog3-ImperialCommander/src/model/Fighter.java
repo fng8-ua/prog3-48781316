@@ -214,9 +214,11 @@ public abstract class Fighter {
 	 * @param at the at
 	 */
 	public void addAttack(int at) {
-		attack += at;
+		
 		if((attack+at) < 0) {
 			attack = 0;
+		}else {
+			attack += at;
 		}
 	}
 	
@@ -226,9 +228,11 @@ public abstract class Fighter {
 	 * @param vel the vel
 	 */
 	public void addVelocity(int vel) {
-		velocity += vel;
+		
 		if((velocity + vel) < 0) {
 			velocity = 0;
+		} else {
+			velocity += vel;
 		}
 		
 	}

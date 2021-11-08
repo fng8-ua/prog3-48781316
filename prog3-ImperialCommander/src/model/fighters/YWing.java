@@ -8,7 +8,7 @@ public class YWing extends Fighter{
 	public YWing(Ship mother) {
 		super(mother);
 		addVelocity(-20);
-		addAttack(-50);
+		addAttack(-10);
 		addShield(30);
 	}
 	

@@ -6,9 +6,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+import model.exceptions.FighterAlreadyInBoardException;
 //import model.FighterFactory;
 import model.exceptions.FighterIsDestroyedException;
+import model.exceptions.FighterNotInBoardException;
 import model.exceptions.InvalidSizeException;
+import model.exceptions.OutOfBoundsException;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -84,8 +87,9 @@ public class Board {
 	 *
 	 * @param f the f
 	 * @return true, if successful
+	 * @throws FighterNotInBoardException si el fighter no está en el tablero
 	 */
-	public boolean removeFighter(Fighter f) {
+	public boolean removeFighter(Fighter f) throws FighterNotInBoardException {
 		Objects.requireNonNull(f);
 		
 		Coordinate c = f.getPosition();
@@ -95,7 +99,11 @@ public class Board {
 			if(board.get(c) != null && board.get(c).equals(f)){
 				board.remove(c);
 				borrada = true;
+			} else {
+				throw new FighterNotInBoardException(f);
 			}
+		} else {
+			throw new FighterNotInBoardException(f);
 		}
 		return borrada;
 	}
@@ -122,9 +130,14 @@ public class Board {
 	 *
 	 * @param c the c
 	 * @return the neighborhood
+	 * @throws OutOfBoundsException si la coordenada pasada no está en el tablero
 	 */
-	public Set<Coordinate> getNeighborhood(Coordinate c){
+	public Set<Coordinate> getNeighborhood(Coordinate c) throws OutOfBoundsException{
 		Objects.requireNonNull(c);
+		
+		if(!inside(c)) {
+			throw new OutOfBoundsException(c);
+		}
 		
 		TreeSet<Coordinate> neighborhoodTS = new TreeSet<Coordinate>();
 		Set<Coordinate> neighborhood = c.getNeighborhood();
@@ -151,15 +164,16 @@ public class Board {
 // Necesitamos un modulo que haga que dos cazas peleen y actualice las posiciones
 	public int batalla(Fighter nuestro, Fighter enemigo) {
 		int res;
-		try {
-			res = nuestro.fight(enemigo);
-		} catch(FighterIsDestroyedException e) {
-			throw new RuntimeException();
-		}
 		
-		
-			nuestro.getMotherShip().updateResults(res);
-			enemigo.getMotherShip().updateResults(-res);
+			try {
+				res = nuestro.fight(enemigo);
+				nuestro.getMotherShip().updateResults(res);
+				enemigo.getMotherShip().updateResults(-res);
+			} catch (FighterIsDestroyedException e) {
+				throw new RuntimeException();
+			}
+	
+			
 		
 		
 		return res;
@@ -185,34 +199,6 @@ public class Board {
 		return amigos;
 	}
 	
-	/**
-	 * Nos dice si va a haber batalla o no queriendo colocar el caza en esa coordenada.
-	 *
-	 * @param c the c
-	 * @param f the f
-	 * @return hay
-	 */
-	public boolean hayBatalla(Coordinate c, Fighter f) {
-		Fighter otro;
-		boolean hay = false;
-		
-		if(inside(c)) {
-			otro = board.get(c);
-			if(otro != null) {
-				if(!sonAmigos(f,otro)) {
-					hay = true;
-				} else {
-					hay = false;
-				}
-			} else {
-				hay = false;
-			}
-		} else {
-			hay = false;
-		}
-		
-		return hay;
-	}
 	
 	/**
 	 * Coloca un fighter si la coordenada est� vac�a o si ganamos la batalla contra
@@ -221,8 +207,10 @@ public class Board {
 	 * @param c la coordenada
 	 * @param f fighter que queremos colocar
 	 * @return the int
+	 * @throws FighterAlreadyInBoardException si el caza ya está en el tablero
+	 * @throws OutOfBoundsException si la posición está fuera del tablero
 	 */
-	public int launch(Coordinate c, Fighter f) {
+	public int launch(Coordinate c, Fighter f) throws FighterAlreadyInBoardException, OutOfBoundsException {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
 		Fighter enemy;
@@ -235,9 +223,13 @@ public class Board {
 		 
 		 */
 		
+		if(f.getPosition() != null) {
+			throw new FighterAlreadyInBoardException(f);
+		}
+		
 
 		if(!inside(c)) {
-			result = 0;
+			throw new OutOfBoundsException(c);
 		} else {
 			if(board.containsKey(c)) {
 				enemy = board.get(c);
@@ -267,37 +259,30 @@ public class Board {
 	 * Patrol.
 	 *
 	 * @param f the f
+	 * @throws FighterNotInBoardException 
+	 *
 	 */
-	public void patrol(Fighter f) {
+	public void patrol(Fighter f) throws FighterNotInBoardException {
 		Objects.requireNonNull(f);
-		Coordinate pos = f.getPosition();
-		Fighter enemy;
-		Set<Coordinate> neighbours;
-		int res;
+		int battleResult;
 		
-		if(pos != null) {
-			Fighter nuestro = board.get(pos);
-			
-			if(nuestro == f) {
-				neighbours = getNeighborhood(pos);
+		if(f.getPosition() == null || board.get(f.getPosition()) == null) {
+			throw new FighterNotInBoardException(f);
+		} else {
+			try {
+				Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
 				
 				for(Coordinate c: neighbours) {
-					enemy = board.get(c);
-					
-					if(enemy != null && !sonAmigos(f,enemy)) {
-						res = batalla(f,enemy);
+					if(board.get(c) != null && !sonAmigos(f,board.get(c))) {
 						
-						if(res == 1) {
-							board.remove(c);
-							enemy.setPosition(null);
-						} else {
-							board.remove(pos);
-							f.setPosition(null);
-							break;
-						}
 					}
 				}
+			} catch (OutOfBoundsException e) {
+				throw new RuntimeException();
 			}
 		}
+		
+		
+		
 	}
 }
