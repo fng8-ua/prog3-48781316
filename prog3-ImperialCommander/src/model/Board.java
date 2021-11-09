@@ -223,10 +223,9 @@ public class Board {
 		 
 		 */
 		
-		if(f.getPosition() != null) {
+		if(f.getPosition() != null || board.containsValue(f)) {
 			throw new FighterAlreadyInBoardException(f);
 		}
-		
 
 		if(!inside(c)) {
 			throw new OutOfBoundsException(c);
@@ -235,13 +234,21 @@ public class Board {
 				enemy = board.get(c);
 				
 				if(!sonAmigos(f,enemy)) {
-					result = batalla(f,enemy);
+					try {
+						result = f.fight(enemy);
+					} catch (FighterIsDestroyedException e) {
+						throw new RuntimeException();
+					}
+					
+					f.getMotherShip().updateResults(result);
+					enemy.getMotherShip().updateResults(-result);
 					
 					if(result == 1) {
-						board.put(c,f);
-						f.setPosition(c);
+						board.put(c, f);
 						enemy.setPosition(null);
+						f.setPosition(c);
 					}
+					
 				}
 			} else {
 				board.put(c,f);
@@ -264,25 +271,47 @@ public class Board {
 	 */
 	public void patrol(Fighter f) throws FighterNotInBoardException {
 		Objects.requireNonNull(f);
-		int battleResult;
+		int r = 0;
+		Fighter enemy;
+		Set<Coordinate> vecinos;
+		
 		
 		if(f.getPosition() == null || board.get(f.getPosition()) == null) {
 			throw new FighterNotInBoardException(f);
-		} else {
-			try {
-				Set<Coordinate> neighbours = getNeighborhood(f.getPosition());
-				
-				for(Coordinate c: neighbours) {
-					if(board.get(c) != null && !sonAmigos(f,board.get(c))) {
-						
-					}
-				}
-			} catch (OutOfBoundsException e) {
-				throw new RuntimeException();
-			}
 		}
 		
+		try {
+			vecinos = getNeighborhood(f.getPosition());
+		} catch (OutOfBoundsException e) {
+			throw new RuntimeException();
+		}
 		
-		
+		for(Coordinate c: vecinos) {
+			enemy = board.get(c);
+			if(!f.isDestroyed()) {
+				if(enemy != null && !sonAmigos(f,enemy)) {
+					try {
+						r = f.fight(enemy);
+						
+						
+						
+						if(r == 1) {
+							f.getMotherShip().updateResults(r);
+							enemy.getMotherShip().updateResults(-r);
+							board.remove(c);
+							enemy.setPosition(null);
+						} else if(r == -1){
+							f.getMotherShip().updateResults(r);
+							enemy.getMotherShip().updateResults(-r);
+							board.remove(f.getPosition());
+							f.setPosition(null);
+							break;
+						}
+					} catch (FighterIsDestroyedException e) {
+						throw new RuntimeException();
+					}
+				}
+			}
+		}
 	}
 }
