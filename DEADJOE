@@ -1,0 +1,15 @@
+
+*** These modified files were found in JOE when it aborted on Tue Nov  9 18:00:06 2021
+*** JOE was aborted because the terminal closed
+
+*** File '* Build Log *'
+
+*** File '(Unnamed)'
+/home/fernando/git/prog3-48781316/.git/COMMIT_EDITMSG
+* Build Log *
+
+*** File '* Startup Log *'
+Processing '/etc/joe/editorrc'...
+Processing '/etc/joe/ftyperc'...
+Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc

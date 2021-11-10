@@ -199,8 +199,8 @@ public class Ship {
 	public int sameType(String type) {
 		int counter = 0;
 		
-		for(Fighter f: fleet) {
-			if(f.getType() == type) {
+		for(int i = 0; i < fleet.size(); i++) {
+			if(fleet.get(i).getType().equals(type) && !fleet.get(i).isDestroyed()) {
 				counter++;
 			}
 		}
@@ -208,17 +208,6 @@ public class Ship {
 		return counter;
 	}
 	
-	/**
-	 * Elimina repetidos de una string.
-	 *
-	 * @param fleetCopy the fleet copy
-	 */ 
-	public void quitarRepetidos(ArrayList<Fighter> fleetCopy) {
-		
-		Set<Fighter> hashSet = new HashSet<Fighter>(fleetCopy);
-		fleetCopy.clear();
-		fleetCopy.addAll(hashSet);
-	}
 	
 	/**
 	 * Muestra un resumen de la flota.
@@ -226,29 +215,50 @@ public class Ship {
 	 * @return cadena de resumen
 	 */
 	public String myFleet() {
+		
+		Boolean todosDestruidos = true;;
+		for(int i = 0; i < fleet.size(); i++) {
+			if(!fleet.get(i).isDestroyed()) {
+				todosDestruidos = false;
+			}
+		}
+		
+		if(fleet.isEmpty() || todosDestruidos) {
+			StringBuilder vacio = new StringBuilder();
+			return vacio.toString();
+		}
+		
 		StringBuilder str = new StringBuilder();
-		ArrayList<Fighter> fleetCopy = new ArrayList<Fighter>();
+		
 		
 		// Creamos una copia de fleet y le quitamos los repetidos
 		// Luego mostramos esa lista usando sameType
 		
-		fleetCopy = fleet;
-		quitarRepetidos(fleetCopy);
-		
-		boolean primera = true;
-		for(int i = 0; i < fleetCopy.size(); i++) {
-			if(primera) {
-				primera = false;
-				str.append(sameType(fleetCopy.get(i).getType()) + "/" + fleetCopy.get(i).getType());
-			} else {
-				str.append(":" + sameType(fleetCopy.get(i).getType()) + "/" + fleetCopy.get(i).getType());
+		ArrayList<String> fleetTypes = new ArrayList<String>();
+		// Quitamos repetidos
+		for(int i = 0; i < fleet.size(); i++) {
+			if(!fleetTypes.contains(fleet.get(i).getType())) {
+				fleetTypes.add(fleet.get(i).getType());
 			}
-			
 		}
 		
-		return str.toString();
+		Boolean primera = true;
+		for(int i = 0; i < fleetTypes.size(); i++) {
+			if(primera) {
+				if(sameType(fleetTypes.get(i)) != 0) {
+					str.append(sameType(fleetTypes.get(i)) + "/" + fleetTypes.get(i));
+					primera = false;
+				}
+				
+			} else {
+				if(sameType(fleetTypes.get(i)) != 0) {
+					str.append(":" + sameType(fleetTypes.get(i)) + "/" + fleetTypes.get(i));
+				}
+			}
+			
+		}	
 		
-
+		return str.toString();
 }
 	
 	/**
