@@ -1,3 +1,8 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
+
 package model;
 
 import java.util.HashMap;
@@ -13,7 +18,7 @@ import model.exceptions.FighterNotInBoardException;
 import model.exceptions.InvalidSizeException;
 import model.exceptions.OutOfBoundsException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Board.
  */
@@ -29,7 +34,7 @@ public class Board {
 	 * Instantiates a new board.
 	 *
 	 * @param size the size
-	 * @throws InvalidSizeException 
+	 * @throws InvalidSizeException the invalid size exception
 	 */
 	public Board(int size) throws InvalidSizeException {
 		if(size < 5) {
@@ -112,7 +117,7 @@ public class Board {
 	 * Inside.
 	 *
 	 * @param c the c
-	 * @return true, if successful
+	 * @return true, si la coordenada está dentro
 	 */
 	public boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);
@@ -157,9 +162,9 @@ public class Board {
 /**
  * Batalla.
  *
- * @param nuestro the nuestro
- * @param enemigo the enemigo
- * @return the int
+ * @param nuestro 
+ * @param enemigo 
+ * @return resultado de la batalla
  */
 // Necesitamos un modulo que haga que dos cazas peleen y actualice las posiciones
 	public int batalla(Fighter nuestro, Fighter enemigo) {
@@ -183,9 +188,9 @@ public class Board {
 	 * Esta funci�n dados dos cazas nos dice si son del mismo bando (son amigos), o si por el
 	 * contrario son de bandos distintos (enemigos).
 	 *
-	 * @param f1 the f 1
-	 * @param f2 the f 2
-	 * @return amigos
+	 * @param f1 fighter 1
+	 * @param f2 fighter 2
+	 * @return true si son del mismo bando
 	 */
 	public boolean sonAmigos(Fighter f1, Fighter f2) {
 		boolean amigos;
@@ -244,6 +249,8 @@ public class Board {
 					enemy.getMotherShip().updateResults(-result);
 					
 					if(result == 1) {
+						f.getMotherShip().updateResults(1);
+						enemy.getMotherShip().updateResults(-1);
 						board.put(c, f);
 						enemy.setPosition(null);
 						f.setPosition(c);
@@ -265,9 +272,8 @@ public class Board {
 	/**
 	 * Patrol.
 	 *
-	 * @param f the f
-	 * @throws FighterNotInBoardException 
-	 *
+	 * @param f caza
+	 * @throws FighterNotInBoardException si el caza no está en el tablero
 	 */
 	public void patrol(Fighter f) throws FighterNotInBoardException {
 		Objects.requireNonNull(f);
@@ -296,16 +302,16 @@ public class Board {
 						
 						
 						if(r == 1) {
-							f.getMotherShip().updateResults(r);
-							enemy.getMotherShip().updateResults(-r);
+							f.getMotherShip().updateResults(1);
+							enemy.getMotherShip().updateResults(-1);
 							board.remove(c);
 							enemy.setPosition(null);
 						} else if(r == -1){
-							f.getMotherShip().updateResults(r);
-							enemy.getMotherShip().updateResults(-r);
+							f.getMotherShip().updateResults(-1);
+							enemy.getMotherShip().updateResults(1);
 							board.remove(f.getPosition());
 							f.setPosition(null);
-							break;
+							
 						}
 					} catch (FighterIsDestroyedException e) {
 						throw new RuntimeException();

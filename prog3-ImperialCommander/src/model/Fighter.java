@@ -13,7 +13,18 @@ import model.exceptions.FighterIsDestroyedException;
 public abstract class Fighter {
 
 	
+	/**
+	 * Constructor de copia
+	 *
+	 * @return el caza
+	 */
 	public abstract Fighter copy();
+	
+	/**
+	 * Simbolo del fighter
+	 *
+	 * @return el simbolo
+	 */
 	public abstract char getSymbol();
 	
 	/**
@@ -103,7 +114,6 @@ public abstract class Fighter {
 	/**
 	 * Crea un nuevo fighter.
 	 *
-	 * @param type the type
 	 * @param mother the mother
 	 */
 	protected Fighter(Ship mother) {
@@ -252,10 +262,7 @@ public abstract class Fighter {
 	 * @return devuelve true si lo es�ta y false si no lo est� (destruido)
 	 */
 	public boolean isDestroyed() {
-		if(shield <= 0)
-			return true;
-		else
-			return false;
+		return (shield <= 0);
 	}
 	
 	/**
@@ -266,11 +273,7 @@ public abstract class Fighter {
 	 * @return da�o provocado
 	 */
 	public int getDamage(int n, Fighter enemy) {
-		int damage;
-		
-		damage = (n*attack)/300;
-		
-		return damage;
+		return (n * attack) / 300;
 	}
 	
 	/**
@@ -296,7 +299,7 @@ public abstract class Fighter {
 	 *
 	 * @param enemy the enemy
 	 * @return devuelve 1 si hemos ganado o -1 si hemos perdido
-	 * @throws lanza la excepcion FighterIsDestroyedException si uno de los fighters que van a luchar está destruido
+	 * @throws FighterIsDestroyedException si el fighter está destruido
 	 */
 	public int fight(Fighter enemy) throws FighterIsDestroyedException{
 		if(this.isDestroyed() || enemy.isDestroyed()) {
@@ -311,26 +314,33 @@ public abstract class Fighter {
 		
 		int n;
 		int umbral;
-		do {
+		
+		while(!enemy.isDestroyed() && !isDestroyed()) {
 			n = RandomNumber.newRandomNumber(100);
-			umbral = (100*velocity)/(enemy.getVelocity() + velocity);
+			umbral = (100 * velocity) / (enemy.getVelocity() + velocity);
+			
+			
+			
 			
 			if(umbral <= n) {
 				// el atacante sera el caza
-				enemy.addShield(-getDamage(n,this));
+				enemy.addShield(-this.getDamage(n, this));
 				
 				if(enemy.isDestroyed())
 					return 1;
 				
 			} else {
 				// el atacante sera el enemigo
-				this.addShield(-getDamage(100-n,enemy));
+				this.addShield(-enemy.getDamage(100 - n, enemy));
 				
 				if(this.isDestroyed())
 					return -1;
 			}
 			
-		} while(!enemy.isDestroyed() && !isDestroyed());
+			
+			
+			
+		} 
 	return 0;
 	}
 }

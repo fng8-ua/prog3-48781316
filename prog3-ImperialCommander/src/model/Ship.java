@@ -11,7 +11,7 @@ import java.util.Set;
 
 import model.exceptions.NoFighterAvailableException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * La clase Ship.
  */
@@ -127,7 +127,7 @@ public class Ship {
 	 *
 	 * @param t the t
 	 * @return primer caza disponible
-	 * @throws NoFighterAvailableException 
+	 * @throws NoFighterAvailableException the no fighter available exception
 	 */
 	public Fighter getFirstAvailableFighter(String t) throws NoFighterAvailableException {
 			
