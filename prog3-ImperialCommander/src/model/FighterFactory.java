@@ -1,7 +1,3 @@
-/**
- * @author Fernando Navarro Gonzalez
- * @author 48781316H
- */
 package model;
 
 import model.fighters.AWing;
@@ -11,19 +7,8 @@ import model.fighters.TIEInterceptor;
 import model.fighters.XWing;
 import model.fighters.YWing;
 
-
-/**
- * A factory for creating Fighter objects.
- */
 public class FighterFactory {
 	
-	/**
-	 * Crea un nuevo objeto fighter
-	 *
-	 * @param type tipo
-	 * @param mother madre
-	 * @return caza
-	 */
 	public static Fighter createFighter(String type, Ship mother) {
 		
 		switch(type) {

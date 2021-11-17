@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+// TODO: Auto-generated Javadoc
 
 /**
  * clase para generar números aleatorios.

@@ -1,10 +1,6 @@
-/**
- * @author Fernando Navarro Gonzalez
- * @author 48781316H
- */
 package model;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * The Enum Side.
  */

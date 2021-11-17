@@ -7,7 +7,7 @@ package model;
 import java.util.Set;
 import java.util.TreeSet;
 
-
+// TODO: Auto-generated Javadoc
 /**
  * La clase coordinate.
  */
