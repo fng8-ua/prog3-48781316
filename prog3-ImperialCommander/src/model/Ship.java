@@ -5,13 +5,9 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import model.exceptions.NoFighterAvailableException;
 
-// TODO: Auto-generated Javadoc
 /**
  * La clase Ship.
  */
@@ -136,8 +132,10 @@ public class Ship {
 			for(int i = 0; i < fleet.size() && !enc; i++) {
 				Fighter fighter = fleet.get(i);
 				if((t.isEmpty() || t.equals(fighter.getType())) && !fighter.isDestroyed()) {
-					enc = true;
-					return fighter;
+					if(fighter.getPosition() == null) {
+						enc = true;
+						return fighter;
+					}
 				}
 			}
 			
