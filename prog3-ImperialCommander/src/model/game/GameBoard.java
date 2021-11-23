@@ -35,7 +35,7 @@ public class GameBoard extends Board{
 	}
 	
 
-	
+	//TODO: aún no funciona
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		Set<Coordinate> tablero = board.keySet();
@@ -57,10 +57,16 @@ public class GameBoard extends Board{
 		for(int i = 0; i < tam; i++) {
 			builder.append(i + "|");
 			
-			for(Coordinate c : tablero) {
+			// Recorremos las columnas
+			for(int j = 0; j < tam; j++) {
+				Coordinate c = new Coordinate(i,j);
 				Fighter f = board.get(c);
 				
-				
+				if(f == null) { 
+					builder.append(" ");
+				} else {
+					builder.append(f.getSymbol()); 
+				}
 			}
 			
 			builder.append("\n");
