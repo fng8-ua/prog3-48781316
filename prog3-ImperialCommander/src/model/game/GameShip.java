@@ -52,11 +52,15 @@ public class GameShip extends Ship{
 	public List<Integer> getFightersId(String where){
 		List<Integer> lista = null;
 		
+		
 		if(where.equals("board")) {
 			for(Fighter f: fleet) {
-				if(f.getPosition() != null && !f.isDestroyed()) {
-					lista.add(f.getId());
+				if(!f.isDestroyed()) {
+					if(f.getPosition() != null && where == "board") {
+						lista.add(f.getId());
+					}
 				}
+				
 			}
 		} else if(where.equals("ship")) {
 			for(Fighter f: fleet) {
@@ -64,6 +68,13 @@ public class GameShip extends Ship{
 					lista.add(f.getId());
 				}
 			}
+		} else {
+			for(Fighter f: fleet) {
+				if(!f.isDestroyed()) {
+					lista.add(f.getId());
+				}
+			}
+					
 		}
 		
 		return lista;

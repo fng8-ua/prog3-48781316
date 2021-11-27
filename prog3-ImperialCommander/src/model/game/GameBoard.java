@@ -35,10 +35,9 @@ public class GameBoard extends Board{
 	}
 	
 
-	//TODO: aún no funciona
+	//TODO: aun no funciona
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		Set<Coordinate> tablero = board.keySet();
 		int tam = this.getSize();
 		
 		builder.append("  "); 

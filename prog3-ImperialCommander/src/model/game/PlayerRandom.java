@@ -2,11 +2,13 @@ package model.game;
 
 import java.util.List;
 
-import model.Fighter;
+import model.Coordinate;
 import model.RandomNumber;
-import model.Ship;
 import model.Side;
-import model.exceptions.InvalidSizeException;
+import model.exceptions.FighterAlreadyInBoardException;
+import model.exceptions.FighterNotInBoardException;
+import model.exceptions.OutOfBoundsException;
+import model.game.exceptions.WrongFighterIdException;
 
 public class PlayerRandom implements IPlayer{
 	
@@ -15,12 +17,8 @@ public class PlayerRandom implements IPlayer{
 	private int numFighters;
 	
 	public PlayerRandom(Side side, int numFighters) {
-		if(side.toString() == "REBEL") {
-			ship = new GameShip("PlayerRandom REBEL Ship", side);
-		} else if(side.toString() == "IMPERIAL") {
-			ship = new GameShip("PlayerRandom IMPERIAL Ship", side);
-		}
 		
+		ship = new GameShip("PlayerRandom " + side + " Ship", side);
 		this.numFighters = numFighters;
 		
 	}
@@ -39,56 +37,59 @@ public class PlayerRandom implements IPlayer{
 	@Override
 	public void initFighters() {
 		StringBuilder builder = new StringBuilder();
-		String[] REBELtypes = new String[] {"TIEFighter", "TIEBomber", "TIEInterceptor"};
-		String[] IMPERIALtypes = new String[] {"XWing", "YWing", "AWing"};
+		String[] IMPERIALtypes = new String[] {"TIEFighter", "TIEBomber", "TIEInterceptor"};
+		String[] REBELtypes = new String[] {"XWing", "YWing", "AWing"};
 		
-		if(this.ship.getSide().toString() == "REBEL") {
+		if(this.ship.getSide().equals(Side.REBEL)) {
 			
 			for(int i = 0; i < REBELtypes.length; i++) {
 				int num = RandomNumber.newRandomNumber(numFighters-1);
 				if(num != 0) {
 					builder.append(num + "/" + REBELtypes[i]);
 				}
-				
+				if(i<REBELtypes.length-1) {
+					builder.append(":");
+				}
 			}
 			
-		} else if(this.ship.getSide().toString() == "IMPERIAL") {
+		} else if(this.ship.getSide().equals(Side.IMPERIAL)) {
 			
 			for(int i = 0; i < IMPERIALtypes.length; i++) {
 				int num = RandomNumber.newRandomNumber(numFighters-1);
 				if(num != 0) {
 					builder.append(num + "/" + IMPERIALtypes[i]);
 				}
-				
+				if(i<IMPERIALtypes.length-1) {
+					builder.append(":");
+				}
 			}
 			
 		}
 		
 		if(builder != null) {
-			//TODO 
-			Ship.addFighters(builder.toString());
+			ship.addFighters(builder.toString());
 		}
-		
-		
-		
 		
 	}
 
 	@Override
 	public boolean isFleetDestroyed() {
-		// TODO Auto-generated method stub
-		return false;
+		return ship.isFleetDestroyed();
 	}
 
 	@Override
 	public String showShip() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(ship.toString() + "\n");
+		builder.append(ship.showFleet());
+		
+		return builder.toString();
 	}
 
 	@Override
 	public void purgeFleet() {
-		// TODO Auto-generated method stub
+		ship.purgeFleet();
 		
 	}
 
@@ -97,35 +98,60 @@ public class PlayerRandom implements IPlayer{
 		int option = RandomNumber.newRandomNumber(100);
 		
 		if(option == 99) {
-			//TODO abandono (exit)
 			return false;
 		} else {
-			
-			List<Integer> idList = null;
-			idList = ship.getFightersId("ship");
-			
-			if(idList.isEmpty()) {
-				System.out.println("ERROR: There are no id's in the list.");
-			}
-			
-			if(option >= 85 && option <= 98) {
+			try {
+				List<Integer> idListShip = null;
+				List<Integer> idListBoard = null;
+				List<Integer> idList = null;
 				
-				int id = RandomNumber.newRandomNumber(numFighters-1);
+				idListShip = ship.getFightersId("ship");
+				idListBoard = ship.getFightersId("board");
+				idList = ship.getFightersId("");
 				
-				
-			}
+				if(option >= 85 && option <= 98) {
+					if(idList.isEmpty()) {
+						System.out.println("ERROR: There are no id's in the list.");
+					}
+					
+					int id = idList.get(RandomNumber.newRandomNumber(numFighters-1));
+	
+					ship.improveFighter(id, option, board);
+	
+				}else if(option >= 25 && option <= 84) {
+					
+					if(idListShip.isEmpty()) {
+						System.out.println("ERROR: There are no id's in the list.");
+					}
+					
+					int id1 = idListShip.get(RandomNumber.newRandomNumber(numFighters-1));
+	
+					int x = RandomNumber.newRandomNumber(board.getSize()-1);
+					int y = RandomNumber.newRandomNumber(board.getSize()-1);
+							
+					Coordinate c = new Coordinate(x,y);
+						
+					ship.launch(id1, c, board);
+						
+				}else if(option >= 0 && option <= 24) {
+					
+					if(idListBoard.isEmpty()) {
+						System.out.println("ERROR: There are no id's in the list.");
+					}
+					
+					int id1 = idListBoard.get(RandomNumber.newRandomNumber(numFighters-1));
+					
+					ship.patrol(id1, board);
+					
+				}
 			
-			if(option >= 25 && option <= 84) {
-				
-			}
-			
-			if(option >= 0 && option <= 24) {
-				
-			}
-			
-			return true;
+			} catch (FighterAlreadyInBoardException | OutOfBoundsException | WrongFighterIdException | FighterNotInBoardException e) {
+				throw new RuntimeException(e);
 		}
 		
 	}
+		return true;
+
+}
 
 }
