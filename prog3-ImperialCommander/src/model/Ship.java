@@ -6,6 +6,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import model.exceptions.NoFighterAvailableException;
 
 /**
@@ -35,6 +37,9 @@ public class Ship {
 	 * @param side the side
 	 */
 	public Ship(String name, Side side) {
+		Objects.requireNonNull(name);
+		Objects.requireNonNull(side);
+		
 		this.name = name;
 		this.side = side;
 		wins = losses = 0;
@@ -83,6 +88,7 @@ public class Ship {
 	 */
 	
 	public void addFighters(String fd) {
+		Objects.requireNonNull(fd);
 		int numTipos;
 		
 		
@@ -126,7 +132,7 @@ public class Ship {
 	 * @throws NoFighterAvailableException 
 	 */
 	public Fighter getFirstAvailableFighter(String t) throws NoFighterAvailableException {
-			
+		Objects.requireNonNull(t);
 		
 		 boolean enc = false;
 			for(int i = 0; i < fleet.size() && !enc; i++) {

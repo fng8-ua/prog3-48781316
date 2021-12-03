@@ -1,5 +1,7 @@
 package model.game;
 
+import java.util.Objects;
+
 import model.Side;
 import model.exceptions.InvalidSizeException;
 
@@ -10,6 +12,9 @@ public class Game {
 	private GameBoard board;
 	
 	public Game(IPlayer imperial, IPlayer rebel) {
+		Objects.requireNonNull(imperial);
+		Objects.requireNonNull(rebel);
+		
 		this.rebel = rebel;
 		this.imperial = imperial;
 		
@@ -25,13 +30,12 @@ public class Game {
 	}
 	
 	public Side play() {
-		Side ganador;
+		Side ganador = null;
 		imperial.initFighters();
 		rebel.initFighters();
 		
 		while(imperial.nextPlay() && rebel.nextPlay() && 
 			  !imperial.isFleetDestroyed() && !rebel.isFleetDestroyed()) {
-			StringBuilder output = new StringBuilder();
 			
 			System.out.println("BEFORE IMPERIAL" + "\n");
 			board.toString();
@@ -42,8 +46,8 @@ public class Game {
 			//TODO juega imperial
 			imperial.nextPlay();
 			if(rebel.isFleetDestroyed()) {
-				ganador = Side.IMPERIAL;
 				return Side.IMPERIAL;
+				
 			} else {
 				System.out.println(Side.IMPERIAL + "(" + imperial.getGameShip().getFightersId("board").size() + "): AFTER IMPERIAL, BEFORE REBEL");
 				board.toString();
@@ -51,10 +55,10 @@ public class Game {
 				System.out.println("\n");
 				rebel.showShip();
 				
+								
 				//TODO juega rebel
 				rebel.nextPlay();
 				if(imperial.isFleetDestroyed()) {
-					ganador = Side.REBEL;
 					return Side.REBEL;
 				} else {
 					System.out.println(Side.REBEL + "(" + rebel.getGameShip().getFightersId("board").size() + "AFTER REBEL");
@@ -64,6 +68,8 @@ public class Game {
 					rebel.showShip();
 				}
 				
+				imperial.purgeFleet();
+				rebel.purgeFleet();
 				
 			}
 			
@@ -72,6 +78,7 @@ public class Game {
 		}
 		return ganador;
 		
-		
+	
+		 
 	}
 }

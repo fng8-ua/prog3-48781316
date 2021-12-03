@@ -1,6 +1,9 @@
 package model.game;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import model.Board;
 import model.Coordinate;
 import model.Fighter;
@@ -50,7 +53,7 @@ public class GameShip extends Ship{
 	
 	@SuppressWarnings("null")
 	public List<Integer> getFightersId(String where){
-		List<Integer> lista = null;
+		ArrayList<Integer> lista = new ArrayList<Integer>();
 		
 		
 		if(where.equals("board")) {
@@ -81,6 +84,10 @@ public class GameShip extends Ship{
 	}
 	
 	public void launch(int id, Coordinate c, Board b) throws WrongFighterIdException, FighterAlreadyInBoardException, OutOfBoundsException {
+		Objects.requireNonNull(id);
+		Objects.requireNonNull(c);
+		Objects.requireNonNull(b);
+		
 		Fighter f = getFighter(id);
 		
 		b.launch(c, f);
@@ -88,13 +95,21 @@ public class GameShip extends Ship{
 	}
 	
 	public void patrol(int id, Board b) throws WrongFighterIdException, FighterNotInBoardException {
+		Objects.requireNonNull(id);
+		Objects.requireNonNull(b);
+		
 		Fighter f = getFighter(id);
 		
 		b.patrol(f);
 	}
 	
 	public void improveFighter(int id, int qty, Board b) throws WrongFighterIdException {
+		Objects.requireNonNull(id);
+		Objects.requireNonNull(qty);
+		Objects.requireNonNull(b);
+		
 		Fighter f = getFighter(id);
+		
 		
 		try {
 			b.removeFighter(f);

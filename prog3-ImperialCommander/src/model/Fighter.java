@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Objects;
+
 import model.exceptions.FighterIsDestroyedException;
 
 // TODO: Auto-generated Javadoc
@@ -107,6 +109,7 @@ public abstract class Fighter {
 	 * @param mother the mother
 	 */
 	protected Fighter(Ship mother) {
+		Objects.requireNonNull(mother);
 
 		id = nextId;
 		motherShip = mother;
@@ -266,6 +269,8 @@ public abstract class Fighter {
 	 * @return da�o provocado
 	 */
 	public int getDamage(int n, Fighter enemy) {
+		Objects.requireNonNull(n);
+		Objects.requireNonNull(enemy);
 		int damage;
 		
 		damage = (n*attack)/300;
@@ -299,6 +304,8 @@ public abstract class Fighter {
 	 * @throws lanza la excepcion FighterIsDestroyedException si uno de los fighters que van a luchar está destruido
 	 */
 	public int fight(Fighter enemy) throws FighterIsDestroyedException{
+		Objects.requireNonNull(enemy);
+		
 		if(this.isDestroyed() || enemy.isDestroyed()) {
 			if(enemy.isDestroyed()) {
 				throw new FighterIsDestroyedException(enemy);
@@ -317,14 +324,14 @@ public abstract class Fighter {
 			
 			if(umbral <= n) {
 				// el atacante sera el caza
-				enemy.addShield(-getDamage(n,this));
+				enemy.addShield(-this.getDamage(n,this));
 				
 				if(enemy.isDestroyed())
 					return 1;
 				
 			} else {
 				// el atacante sera el enemigo
-				this.addShield(-getDamage(100-n,enemy));
+				this.addShield(-enemy.getDamage(100-n,enemy));
 				
 				if(this.isDestroyed())
 					return -1;

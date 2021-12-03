@@ -1,6 +1,7 @@
 package model.game;
 
 import java.util.List;
+import java.util.Objects;
 
 import model.Coordinate;
 import model.RandomNumber;
@@ -17,6 +18,8 @@ public class PlayerRandom implements IPlayer{
 	private int numFighters;
 	
 	public PlayerRandom(Side side, int numFighters) {
+		Objects.requireNonNull(side);
+		Objects.requireNonNull(numFighters);
 		
 		ship = new GameShip("PlayerRandom " + side + " Ship", side);
 		this.numFighters = numFighters;
@@ -25,6 +28,7 @@ public class PlayerRandom implements IPlayer{
 
 	@Override
 	public void setBoard(GameBoard gb) {
+		Objects.requireNonNull(gb);
 		board = gb;
 		
 	}
@@ -37,36 +41,23 @@ public class PlayerRandom implements IPlayer{
 	@Override
 	public void initFighters() {
 		StringBuilder builder = new StringBuilder();
-		String[] IMPERIALtypes = new String[] {"TIEFighter", "TIEBomber", "TIEInterceptor"};
-		String[] REBELtypes = new String[] {"XWing", "YWing", "AWing"};
+		String[] IMPERIALtypes = {"TIEFighter", "TIEBomber", "TIEInterceptor"};
+		String[] REBELtypes = {"XWing", "YWing", "AWing"};
+		String[] types = (this.ship.getSide() == Side.IMPERIAL)? IMPERIALtypes:REBELtypes;
 		
-		if(this.ship.getSide().equals(Side.REBEL)) {
-			
-			for(int i = 0; i < REBELtypes.length; i++) {
-				int num = RandomNumber.newRandomNumber(numFighters-1);
+		
+			for(int i = 0; i < types.length; i++) {
+				int num = RandomNumber.newRandomNumber(numFighters);
 				if(num != 0) {
-					builder.append(num + "/" + REBELtypes[i]);
-				}
-				if(i<REBELtypes.length-1) {
-					builder.append(":");
+					if(builder.length() > 0) {
+						builder.append(":");
+					}
+					
+					builder.append(num + "/" + types[i]);
 				}
 			}
-			
-		} else if(this.ship.getSide().equals(Side.IMPERIAL)) {
-			
-			for(int i = 0; i < IMPERIALtypes.length; i++) {
-				int num = RandomNumber.newRandomNumber(numFighters-1);
-				if(num != 0) {
-					builder.append(num + "/" + IMPERIALtypes[i]);
-				}
-				if(i<IMPERIALtypes.length-1) {
-					builder.append(":");
-				}
-			}
-			
-		}
 		
-		if(builder != null) {
+		if(builder.length() > 0) {
 			ship.addFighters(builder.toString());
 		}
 		
@@ -110,38 +101,37 @@ public class PlayerRandom implements IPlayer{
 				idList = ship.getFightersId("");
 				
 				if(option >= 85 && option <= 98) {
-					if(idList.isEmpty()) {
-						System.out.println("ERROR: There are no id's in the list.");
-					}
 					
-					int id = idList.get(RandomNumber.newRandomNumber(numFighters-1));
-	
-					ship.improveFighter(id, option, board);
+					if(extractedIdListError(idList)) {
+						return true;
+					}
+						
+						int id = idList.get(RandomNumber.newRandomNumber(numFighters));
+						ship.improveFighter(id, option, board);
+						
+					
+					
+					
 	
 				}else if(option >= 25 && option <= 84) {
 					
-					if(idListShip.isEmpty()) {
-						System.out.println("ERROR: There are no id's in the list.");
-					}
-					
-					int id1 = idListShip.get(RandomNumber.newRandomNumber(numFighters-1));
-	
-					int x = RandomNumber.newRandomNumber(board.getSize()-1);
-					int y = RandomNumber.newRandomNumber(board.getSize()-1);
-							
-					Coordinate c = new Coordinate(x,y);
+					extractedIdListError(idListShip); 
 						
-					ship.launch(id1, c, board);
+						int id1 = idListShip.get(RandomNumber.newRandomNumber(numFighters));
+						int x = RandomNumber.newRandomNumber(board.getSize());
+						int y = RandomNumber.newRandomNumber(board.getSize());
+						
+						Coordinate c = new Coordinate(x,y);
+						ship.launch(id1, c, board);
+						
+					
 						
 				}else if(option >= 0 && option <= 24) {
 					
-					if(idListBoard.isEmpty()) {
-						System.out.println("ERROR: There are no id's in the list.");
-					}
-					
-					int id1 = idListBoard.get(RandomNumber.newRandomNumber(numFighters-1));
-					
-					ship.patrol(id1, board);
+					extractedIdListError(idListBoard); 
+						int id1 = idListBoard.get(RandomNumber.newRandomNumber(idListBoard.size()));
+						ship.patrol(id1, board);
+						
 					
 				}
 			
@@ -153,5 +143,16 @@ public class PlayerRandom implements IPlayer{
 		return true;
 
 }
+
+	private boolean extractedIdListError(List<Integer> idList) {
+		if(idList.isEmpty()) {
+			
+			System.out.println("ERROR: There are no id's in the list.");
+			return true;
+			
+		} else {
+			return false;
+		}
+	}
 
 }

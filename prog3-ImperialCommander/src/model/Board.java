@@ -39,6 +39,10 @@ public class Board {
 		this.size = size;
 	}
 	
+	public boolean containsValue(Fighter f) {
+		return board.containsValue(f);
+	}
+	
 	/**
 	 * Gets the fighter.
 	 *

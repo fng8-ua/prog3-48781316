@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 import model.fighters.AWing;
 import model.fighters.TIEBomber;
 import model.fighters.TIEFighter;
@@ -10,6 +12,8 @@ import model.fighters.YWing;
 public class FighterFactory {
 	
 	public static Fighter createFighter(String type, Ship mother) {
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(mother);
 		
 		switch(type) {
 		

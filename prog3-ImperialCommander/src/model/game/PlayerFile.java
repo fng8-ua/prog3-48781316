@@ -3,6 +3,7 @@ package model.game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import model.Coordinate;
 import model.Fighter;
@@ -20,13 +21,16 @@ public class PlayerFile implements IPlayer{
 	private BufferedReader br;
 	
 	public PlayerFile(Side side, BufferedReader br) {
-
+		Objects.requireNonNull(side);
+		Objects.requireNonNull(br);
+		
 		ship = new GameShip("PlayerRandom " + side + " Ship", side);
 		this.br = br;
 	}
 	
 	@Override
 	public void setBoard(GameBoard gb) {
+		Objects.requireNonNull(gb);
 		board = gb;
 	}
 
