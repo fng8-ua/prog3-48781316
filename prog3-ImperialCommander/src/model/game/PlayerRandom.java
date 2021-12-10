@@ -86,73 +86,82 @@ public class PlayerRandom implements IPlayer{
 
 	@Override
 	public boolean nextPlay() {
+		/*TODO falla el test testNextPlayManyTimes1 de PlayerRandomPreTest
+		 * */
+		
 		int option = RandomNumber.newRandomNumber(100);
+		List<Integer> idList;
 		
 		if(option == 99) {
 			return false;
 		} else {
-			try {
-				List<Integer> idListShip = null;
-				List<Integer> idListBoard = null;
-				List<Integer> idList = null;
-				
-				idListShip = ship.getFightersId("ship");
-				idListBoard = ship.getFightersId("board");
+			if(option >= 85) {
 				idList = ship.getFightersId("");
 				
-				if(option >= 85 && option <= 98) {
+				if(idList.isEmpty()) {
+					System.out.println("ERROR: Empty list.");
+				} else {
+					int randomId = RandomNumber.newRandomNumber(idList.size());
 					
-					if(extractedIdListError(idList)) {
-						return true;
+					try {
+						ship.improveFighter(idList.get(randomId), option, board);
+					} catch (WrongFighterIdException e) {
+						throw new RuntimeException(e);
 					}
-						
-						int id = idList.get(RandomNumber.newRandomNumber(numFighters));
-						ship.improveFighter(id, option, board);
-						
-					
-					
-					
-	
-				}else if(option >= 25 && option <= 84) {
-					
-					extractedIdListError(idListShip); 
-						
-						int id1 = idListShip.get(RandomNumber.newRandomNumber(numFighters));
-						int x = RandomNumber.newRandomNumber(board.getSize());
-						int y = RandomNumber.newRandomNumber(board.getSize());
-						
-						Coordinate c = new Coordinate(x,y);
-						ship.launch(id1, c, board);
-						
-					
-						
-				}else if(option >= 0 && option <= 24) {
-					
-					extractedIdListError(idListBoard); 
-						int id1 = idListBoard.get(RandomNumber.newRandomNumber(idListBoard.size()));
-						ship.patrol(id1, board);
-						
-					
 				}
+				
+				
+				
+			} else if (option >= 25) {
+				idList = ship.getFightersId("ship");
+				
+				if(idList.isEmpty()) {
+					System.out.println("ERROR: Empty list.");
+				} else {
+					int randomId = RandomNumber.newRandomNumber(idList.size());
+					
+					int x = RandomNumber.newRandomNumber(board.getSize());
+					int y = RandomNumber.newRandomNumber(board.getSize());
+					
+					Coordinate c = new Coordinate(x,y);
+					
+					try {
+						ship.launch(idList.get(randomId), c, board);
+					} catch (WrongFighterIdException | FighterAlreadyInBoardException | OutOfBoundsException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				
+				
+				
+			} else if (option >= 0) {
+				idList = ship.getFightersId("board");
+				
+				if(idList.isEmpty()) {
+					System.out.println("ERROR: Empty list.");
+				} else {
+					
+					try {
+						int randomId = RandomNumber.newRandomNumber(idList.size());
+						ship.patrol(idList.get(randomId), board);
+					} catch (WrongFighterIdException | FighterNotInBoardException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				
+				
+				
+			}
 			
-			} catch (FighterAlreadyInBoardException | OutOfBoundsException | WrongFighterIdException | FighterNotInBoardException e) {
-				throw new RuntimeException(e);
+			return true;
 		}
 		
+		
+
 	}
-		return true;
 
-}
-
-	private boolean extractedIdListError(List<Integer> idList) {
-		if(idList.isEmpty()) {
-			
-			System.out.println("ERROR: There are no id's in the list.");
-			return true;
-			
-		} else {
-			return false;
-		}
+	private void extractedErrorMethod() {
+		System.out.println("ERROR: There are no id's in the list.");
 	}
 
 }

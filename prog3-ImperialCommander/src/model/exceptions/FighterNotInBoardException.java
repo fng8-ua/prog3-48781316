@@ -12,7 +12,7 @@ public class FighterNotInBoardException extends Exception{
 	}
 	
 	public String getMessage() {
-		return "ERROR: " + fighter.toString() + " not in board.";
+		return "ERROR: " + fighter.getId() + " not in board.";
 	}
 	
 }

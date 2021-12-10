@@ -25,8 +25,10 @@ public class GameShip extends Ship{
 		boolean fleetDestroyed = true;
 		
 		for(Fighter f: fleet) {
-			if(!f.isDestroyed()) {
-				return false;
+			if(f != null) {
+				if(!f.isDestroyed()) {
+					return false;
+				}
 			}
 		}
 		
@@ -37,9 +39,9 @@ public class GameShip extends Ship{
 		boolean encontrado = false;
 		Fighter f = null;
 		for(Fighter f1: fleet) {
-			if(f1.getId() == id && !f1.isDestroyed()) {
+			if(f1.getId() == id && !f1.isDestroyed() && encontrado == false) {
 				encontrado = true;
-				return f1;
+				f = f1;
 			}
 		}
 		
@@ -56,12 +58,10 @@ public class GameShip extends Ship{
 		ArrayList<Integer> lista = new ArrayList<Integer>();
 		
 		
-		if(where.equals("board")) {
+		if(where == "board") {
 			for(Fighter f: fleet) {
-				if(!f.isDestroyed()) {
-					if(f.getPosition() != null && where == "board") {
-						lista.add(f.getId());
-					}
+				if(!f.isDestroyed() && f.getPosition() != null) {
+					lista.add(f.getId());	
 				}
 				
 			}

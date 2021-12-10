@@ -39,6 +39,7 @@ public class Board {
 		this.size = size;
 	}
 	
+	
 	public boolean containsValue(Fighter f) {
 		return board.containsValue(f);
 	}
@@ -280,7 +281,7 @@ public class Board {
 		Set<Coordinate> vecinos;
 		
 		
-		if(f.getPosition() == null || board.get(f.getPosition()) == null) {
+		if(f.getPosition() == null) {
 			throw new FighterNotInBoardException(f);
 		}
 		

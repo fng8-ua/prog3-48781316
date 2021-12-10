@@ -25,7 +25,7 @@ public class GameBoard extends Board{
 		
 		for(Coordinate c : tablero) {
 			Fighter f = board.get(c);
-			if(f != null && f.getMotherShip().getSide().equals(side)) {
+			if(f.getSide() == side) {
 				num++;
 			}
 		}

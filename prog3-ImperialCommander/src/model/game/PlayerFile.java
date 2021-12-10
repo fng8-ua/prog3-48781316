@@ -24,8 +24,9 @@ public class PlayerFile implements IPlayer{
 		Objects.requireNonNull(side);
 		Objects.requireNonNull(br);
 		
-		ship = new GameShip("PlayerRandom " + side + " Ship", side);
+		ship = new GameShip("PlayerFile " + side + " Ship", side);
 		this.br = br;
+		
 	}
 	
 	@Override
@@ -80,81 +81,86 @@ public class PlayerFile implements IPlayer{
 			throw new RuntimeException(e);
 		}
 		
-		ArrayList<String> tokens = new ArrayList<String>();
-		brLine.split(brLine);
+		String[] tokens;
+		tokens = brLine.split(" ");
 		
-		try {
-			switch(tokens.get(0)) {
-				case "exit":
-					return false;
+			switch(tokens[0]) {
+			
+			case "exit":
+				return false;
+				
 			case "improve":
-					if(tokens.size() == 3) {
-						if(Integer.parseInt(tokens.get(2)) >= 100) {
-							System.out.println("ERROR: qty must be less than 100.");
-							return true;
-						} else {
-							ship.improveFighter(Integer.parseInt(tokens.get(1)), Integer.parseInt(tokens.get(2)), board);
-						}
+				if(tokens.length != 3) {
+					System.out.println("ERROR: improve received wrong input's length.");
+				} else {
+					if(Integer.parseInt(tokens[2]) >= 100) {
+						System.out.println("ERROR: improve qty must be less than 100.");
 					} else {
-						System.out.println("ERROR: incorrect number o arguments.");
-						return true;
-					}
-					return true;
-					
-				case "patrol":
-					if(tokens.size() == 2) {
-						ship.patrol(Integer.parseInt(tokens.get(1)), board);
-					} else {
-						System.out.println("ERROR: incorrect number o arguments.");
-						return true;
-					}
-					return true;
-					
-				case "launch":
-					if(tokens.size() == 3) {
-						int x = Integer.parseInt(tokens.get(1));
-						int y = Integer.parseInt(tokens.get(2));
-						Coordinate c = new Coordinate(x,y);
-						
-						Fighter f = ship.getFirstAvailableFighter(null);
-						
-						ship.launch(f.getId(), c, board);
-						
-					} else if(tokens.size() == 4) {
 						try {
-							Integer.parseInt(tokens.get(3));
+							ship.improveFighter(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), board);
+						} catch (NumberFormatException | WrongFighterIdException e) {
+							System.out.println(e.getMessage());
+						}
+					}
+				}
+				return true;
+				
+			case "patrol":
+				if(tokens.length != 2) {
+					System.out.println("ERROR: patrol wrong input's length.");
+				} else {
+					try {
+						ship.patrol(Integer.parseInt(tokens[1]), board);
+					} catch (NumberFormatException | WrongFighterIdException | FighterNotInBoardException e) {
+						System.out.println(e.getMessage());
+					}
+				}
+				return true;
+				
+			case "launch":
+				if(tokens.length != 3 || tokens.length != 4) {
+					System.out.println("ERROR: launch wrong input's length.");
+				} else {
+					if(tokens.length == 3) {
+						Coordinate c = new Coordinate(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+						try {
+							ship.launch(ship.getFirstAvailableFighter("").getId(), c, board);
+						} catch (WrongFighterIdException | FighterAlreadyInBoardException | OutOfBoundsException
+								| NoFighterAvailableException e) {
+							System.out.println(e);
+						}
+					} else if(tokens.length == 4) {
+						try {
+							Coordinate c = new Coordinate(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+
+							try {
+								ship.launch(Integer.parseInt(tokens[3]), c, board);
+							} catch (WrongFighterIdException | FighterAlreadyInBoardException
+									| OutOfBoundsException e) {
+								System.out.println(e.getMessage());
+							}
+							
 						} catch(NumberFormatException e) {
-							int x = Integer.parseInt(tokens.get(1));
-							int y = Integer.parseInt(tokens.get(2));
-							Coordinate c = new Coordinate(x,y);
-							
-							Fighter f = ship.getFirstAvailableFighter(tokens.get(3));
-							
-							ship.launch(f.getId(), c, board);
+							Coordinate c = new Coordinate(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+							try {
+								ship.launch(ship.getFirstAvailableFighter(tokens[3]).getId(), c, board);
+							} catch (WrongFighterIdException | FighterAlreadyInBoardException | OutOfBoundsException
+									| NoFighterAvailableException e1) {
+								System.out.println(e.getMessage());
+							}
 						}
 						
-						int x = Integer.parseInt(tokens.get(1));
-						int y = Integer.parseInt(tokens.get(2));
-						Coordinate c = new Coordinate(x,y);
-						
-						Fighter f = ship.getFirstAvailableFighter(null);
-						
-						ship.launch(f.getId(), c, board);
 						
 						
-					} else {
-						System.out.println("ERROR: incorrect number o arguments.");
-						return true;
 					}
-					
-				default:
-					System.out.println("ERROR: incorrect argument.");
-					return true;
-					
+				}
+				return true;
+				
+			default:
+				System.out.println("ERROR: wrong keyword " + tokens[0]);
+				return true;
 			}
-		} catch(FighterAlreadyInBoardException | WrongFighterIdException | FighterNotInBoardException | NoFighterAvailableException | OutOfBoundsException e) {
-			throw new RuntimeException(e);
-		}
+
 	}
 		
 

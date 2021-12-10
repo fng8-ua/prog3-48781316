@@ -105,7 +105,11 @@ public class Ship {
 			
 			for(int j = 1; j <= numTipos; j++) {
 				// Crear el numero de tipos indicado y lo a�adimos a fleet
-				fleet.add(FighterFactory.createFighter(partes[1],this));
+				Fighter f = FighterFactory.createFighter(partes[1],this);
+				if(f != null) {
+					fleet.add(f);
+				}
+				
 			}
 		}
 		
@@ -179,13 +183,15 @@ public class Ship {
 		
 		if(!fleet.isEmpty()) {
 			for(Fighter f: fleet) {
-				str.append(f.toString());
-				
-				if(f.isDestroyed()) {
-					str.append(" (X)");
+				if(f != null) {
+					str.append(f.toString());
+					
+					if(f.isDestroyed()) {
+						str.append(" (X)");
+					}
+					
+					str.append("\n");
 				}
-				
-				str.append("\n");
 			}
 			
 			return str.toString();
@@ -220,10 +226,13 @@ public class Ship {
 	 */
 	public String myFleet() {
 		
-		Boolean todosDestruidos = true;;
-		for(int i = 0; i < fleet.size(); i++) {
-			if(!fleet.get(i).isDestroyed()) {
-				todosDestruidos = false;
+		boolean todosDestruidos = true;;
+		
+		for(Fighter f: fleet) {
+			if(f != null) {
+				if(!f.isDestroyed()) {
+					todosDestruidos = false;
+				}
 			}
 		}
 		
