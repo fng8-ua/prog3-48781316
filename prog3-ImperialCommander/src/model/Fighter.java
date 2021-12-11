@@ -15,7 +15,18 @@ import model.exceptions.FighterIsDestroyedException;
 public abstract class Fighter {
 
 	
+	/**
+	 * Copy.
+	 *
+	 * @return the fighter
+	 */
 	public abstract Fighter copy();
+	
+	/**
+	 * Gets the symbol.
+	 *
+	 * @return the symbol
+	 */
 	public abstract char getSymbol();
 	
 	/**
@@ -105,7 +116,6 @@ public abstract class Fighter {
 	/**
 	 * Crea un nuevo fighter.
 	 *
-	 * @param type the type
 	 * @param mother the mother
 	 */
 	protected Fighter(Ship mother) {
@@ -113,7 +123,6 @@ public abstract class Fighter {
 
 		id = nextId;
 		motherShip = mother;
-		
 		velocity = 100;
 		attack = 80;
 		shield = 80;
@@ -301,7 +310,7 @@ public abstract class Fighter {
 	 *
 	 * @param enemy the enemy
 	 * @return devuelve 1 si hemos ganado o -1 si hemos perdido
-	 * @throws lanza la excepcion FighterIsDestroyedException si uno de los fighters que van a luchar está destruido
+	 * @throws FighterIsDestroyedException the fighter is destroyed exception
 	 */
 	public int fight(Fighter enemy) throws FighterIsDestroyedException{
 		Objects.requireNonNull(enemy);

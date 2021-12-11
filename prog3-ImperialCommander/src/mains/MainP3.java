@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package mains;
 
 import model.Board;

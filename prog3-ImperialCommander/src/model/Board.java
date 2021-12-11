@@ -1,3 +1,7 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
 package model;
 
 import java.util.HashMap;
@@ -29,7 +33,7 @@ public class Board {
 	 * Instantiates a new board.
 	 *
 	 * @param size the size
-	 * @throws InvalidSizeException 
+	 * @throws InvalidSizeException the invalid size exception
 	 */
 	public Board(int size) throws InvalidSizeException {
 		if(size < 5) {
@@ -40,6 +44,12 @@ public class Board {
 	}
 	
 	
+	/**
+	 * Contains value.
+	 *
+	 * @param f the f
+	 * @return true, if successful
+	 */
 	public boolean containsValue(Fighter f) {
 		return board.containsValue(f);
 	}
@@ -242,7 +252,7 @@ public class Board {
 					try {
 						result = f.fight(enemy);
 					} catch (FighterIsDestroyedException e) {
-						throw new RuntimeException();
+						throw new RuntimeException(e.getMessage());
 					}
 					
 					f.getMotherShip().updateResults(result);
@@ -251,13 +261,17 @@ public class Board {
 					if(result == 1) {
 						board.put(c, f);
 						enemy.setPosition(null);
-						f.setPosition(c);
+						
+						
+						
 					}
 					
 				}
 			} else {
 				board.put(c,f);
 				f.setPosition(c);
+				
+				
 				
 			}
 		}
@@ -271,8 +285,7 @@ public class Board {
 	 * Patrol.
 	 *
 	 * @param f the f
-	 * @throws FighterNotInBoardException 
-	 *
+	 * @throws FighterNotInBoardException the fighter not in board exception
 	 */
 	public void patrol(Fighter f) throws FighterNotInBoardException {
 		Objects.requireNonNull(f);

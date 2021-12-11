@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package model;
 
 import java.util.Objects;
@@ -9,8 +12,19 @@ import model.fighters.TIEInterceptor;
 import model.fighters.XWing;
 import model.fighters.YWing;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Fighter objects.
+ */
 public class FighterFactory {
 	
+	/**
+	 * Creates a new Fighter object.
+	 *
+	 * @param type the type
+	 * @param mother the mother
+	 * @return the fighter
+	 */
 	public static Fighter createFighter(String type, Ship mother) {
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(mother);

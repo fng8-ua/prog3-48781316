@@ -1,3 +1,7 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
 package model.game;
 
 import java.util.ArrayList;
@@ -14,13 +18,28 @@ import model.exceptions.FighterNotInBoardException;
 import model.exceptions.OutOfBoundsException;
 import model.game.exceptions.WrongFighterIdException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GameShip.
+ */
 public class GameShip extends Ship{
 
+	/**
+	 * Instantiates a new game ship.
+	 *
+	 * @param name the name
+	 * @param side the side
+	 */
 	public GameShip(String name, Side side) {
 		super(name, side);
 		
 	}
 	
+	/**
+	 * Checks if is fleet destroyed.
+	 *
+	 * @return true, if is fleet destroyed
+	 */
 	public boolean isFleetDestroyed() {
 		boolean fleetDestroyed = true;
 		
@@ -35,6 +54,13 @@ public class GameShip extends Ship{
 		return fleetDestroyed;
 	}
 	
+	/**
+	 * Gets the fighter.
+	 *
+	 * @param id the id
+	 * @return the fighter
+	 * @throws WrongFighterIdException the wrong fighter id exception
+	 */
 	private Fighter getFighter(int id) throws WrongFighterIdException {
 		boolean encontrado = false;
 		Fighter f = null;
@@ -53,6 +79,12 @@ public class GameShip extends Ship{
 		
 	}
 	
+	/**
+	 * Gets the fighters id.
+	 *
+	 * @param where the where
+	 * @return the fighters id
+	 */
 	@SuppressWarnings("null")
 	public List<Integer> getFightersId(String where){
 		ArrayList<Integer> lista = new ArrayList<Integer>();
@@ -83,26 +115,54 @@ public class GameShip extends Ship{
 		return lista;
 	}
 	
+	/**
+	 * Launch.
+	 *
+	 * @param id the id
+	 * @param c the c
+	 * @param b the b
+	 * @throws WrongFighterIdException the wrong fighter id exception
+	 * @throws FighterAlreadyInBoardException the fighter already in board exception
+	 * @throws OutOfBoundsException the out of bounds exception
+	 */
 	public void launch(int id, Coordinate c, Board b) throws WrongFighterIdException, FighterAlreadyInBoardException, OutOfBoundsException {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(b);
+	
 		
-		Fighter f = getFighter(id);
+		b.launch(c, getFighter(id));
 		
-		b.launch(c, f);
+		
+		
 		
 	}
 	
+	/**
+	 * Patrol.
+	 *
+	 * @param id the id
+	 * @param b the b
+	 * @throws WrongFighterIdException the wrong fighter id exception
+	 * @throws FighterNotInBoardException the fighter not in board exception
+	 */
 	public void patrol(int id, Board b) throws WrongFighterIdException, FighterNotInBoardException {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(b);
 		
-		Fighter f = getFighter(id);
+	
 		
-		b.patrol(f);
+		b.patrol(getFighter(id));
 	}
 	
+	/**
+	 * Improve fighter.
+	 *
+	 * @param id the id
+	 * @param qty the qty
+	 * @param b the b
+	 * @throws WrongFighterIdException the wrong fighter id exception
+	 */
 	public void improveFighter(int id, int qty, Board b) throws WrongFighterIdException {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(qty);
@@ -111,8 +171,11 @@ public class GameShip extends Ship{
 		Fighter f = getFighter(id);
 		
 		
+		
+		
 		try {
 			b.removeFighter(f);
+			f.setPosition(null);
 		} catch (FighterNotInBoardException e) {
 			// no se hace nada
 		}
