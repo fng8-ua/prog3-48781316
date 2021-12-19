@@ -13,6 +13,10 @@ import model.exceptions.FighterIsDestroyedException;
  * Clase Fighter.
  */
 public abstract class Fighter {
+	
+	public int getValue() {
+		return velocity + attack;
+	}
 
 	
 	/**

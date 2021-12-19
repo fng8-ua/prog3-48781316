@@ -121,7 +121,7 @@ public class Ship {
 	 *
 	 * @param r the r
 	 */
-	public void updateResults(int r) {
+	public void updateResults(int r, Fighter f) {
 		if(r == 1)
 			wins++;
 		if(r == -1)

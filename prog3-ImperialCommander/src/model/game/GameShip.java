@@ -17,13 +17,37 @@ import model.exceptions.FighterAlreadyInBoardException;
 import model.exceptions.FighterNotInBoardException;
 import model.exceptions.OutOfBoundsException;
 import model.game.exceptions.WrongFighterIdException;
+import model.game.score.DestroyedFightersScore;
+import model.game.score.WinsScore;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class GameShip.
  */
 public class GameShip extends Ship{
-
+	
+	private DestroyedFightersScore destroyedFightersScore;
+	private WinsScore winsScore;
+	
+	@Override
+	public void updateResults(int r, Fighter f) {
+		updateResults(r, f);
+		
+		if(r == 1) {
+			//TODO
+		}
+	}
+	
+	public DestroyedFightersScore getDestroyedFightersScore() {
+		return destroyedFightersScore;
+	}
+	
+	public WinsScore getWinsScore() {
+		return winsScore;
+	}
+	
+	
+	
 	/**
 	 * Instantiates a new game ship.
 	 *

@@ -182,8 +182,14 @@ public class Board {
 		
 			try {
 				res = nuestro.fight(enemigo);
-				nuestro.getMotherShip().updateResults(res);
-				enemigo.getMotherShip().updateResults(-res);
+				if(res == 1) {
+					nuestro.getMotherShip().updateResults(1, enemigo);
+					enemigo.getMotherShip().updateResults(-1, enemigo);
+				} else {
+					nuestro.getMotherShip().updateResults(1, nuestro);
+					enemigo.getMotherShip().updateResults(-1, nuestro);
+				}
+				
 			} catch (FighterIsDestroyedException e) {
 				throw new RuntimeException();
 			}
@@ -255,15 +261,20 @@ public class Board {
 						throw new RuntimeException(e.getMessage());
 					}
 					
-					f.getMotherShip().updateResults(result);
-					enemy.getMotherShip().updateResults(-result);
+					if(result == 1) {
+						f.getMotherShip().updateResults(1, enemy);
+						enemy.getMotherShip().updateResults(-1, enemy);
+					} else {
+						f.getMotherShip().updateResults(1, f);
+						enemy.getMotherShip().updateResults(-1, f);
+					}
+					
+					
 					
 					if(result == 1) {
 						board.put(c, f);
 						enemy.setPosition(null);
-						
-						
-						
+	
 					}
 					
 				}
@@ -314,13 +325,13 @@ public class Board {
 						
 						
 						if(r == 1) {
-							f.getMotherShip().updateResults(r);
-							enemy.getMotherShip().updateResults(-r);
+							f.getMotherShip().updateResults(1, enemy);
+							enemy.getMotherShip().updateResults(-1, enemy);
 							board.remove(c);
 							enemy.setPosition(null);
 						} else if(r == -1){
-							f.getMotherShip().updateResults(r);
-							enemy.getMotherShip().updateResults(-r);
+							f.getMotherShip().updateResults(1, f);
+							enemy.getMotherShip().updateResults(-1, f);
 							board.remove(f.getPosition());
 							f.setPosition(null);
 							break;

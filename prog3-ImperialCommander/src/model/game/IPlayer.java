@@ -4,11 +4,18 @@
  */
 package model.game;
 
+import model.game.score.DestroyedFightersScore;
+import model.game.score.WinsScore;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Interface IPlayer.
  */
 public interface IPlayer {
+	
+	public WinsScore getWinsScore();
+	
+	public DestroyedFightersScore getDestroyedFightersScore();
 
 	/**
 	 * Sets the board.

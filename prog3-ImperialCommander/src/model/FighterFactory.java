@@ -4,13 +4,8 @@
 package model;
 
 import java.util.Objects;
+import java.lang.reflect.*;
 
-import model.fighters.AWing;
-import model.fighters.TIEBomber;
-import model.fighters.TIEFighter;
-import model.fighters.TIEInterceptor;
-import model.fighters.XWing;
-import model.fighters.YWing;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -29,24 +24,30 @@ public class FighterFactory {
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(mother);
 		
-		switch(type) {
+		String className = "model.fighters." + type;
 		
-		case "AWing": //Creamos un AWing
-			return new AWing(mother);
-		case "XWing": //Creamos un XWing
-			return new XWing(mother);
-		case "YWing": //Creamos un YWing
-			return new YWing(mother);
-		case "TIEInterceptor": //Creamos un TIEInterceptor
-			return new TIEInterceptor(mother);
-		case "TIEFighter": //Creamos un TIEFighter
-			return new TIEFighter(mother);
-		case "TIEBomber": //Creamos un TIEBomber
-			return new TIEBomber(mother);
+		Class<?> c = null;
+		
+			try {
+				c = Class.forName(className);
+			} catch (ClassNotFoundException e1) {
+				System.out.println("ERROR: Class not found exception.");
+			}
 			
-		default: 
+			try {
+				
+				Fighter f = (Fighter) c.getDeclaredConstructor(Ship.class).newInstance(mother);
+				return f;
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				
+			}
 			return null;
-		}
+			
+		
+		
+			
+		
 	}
 		
 

@@ -15,6 +15,8 @@ import model.exceptions.FighterNotInBoardException;
 import model.exceptions.NoFighterAvailableException;
 import model.exceptions.OutOfBoundsException;
 import model.game.exceptions.WrongFighterIdException;
+import model.game.score.DestroyedFightersScore;
+import model.game.score.WinsScore;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -219,6 +221,16 @@ public class PlayerFile implements IPlayer{
 		
 		return true;
 
+	}
+
+	@Override
+	public WinsScore getWinsScore() {
+		return getGameShip().getWinsScore();
+	}
+
+	@Override
+	public DestroyedFightersScore getDestroyedFightersScore() {
+		return getGameShip().getDestroyedFightersScore();
 	}
 		
 
