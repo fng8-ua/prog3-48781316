@@ -148,7 +148,7 @@ public class ShipTestP2 {
 	/* Se comprueba que UpdateResults(1) incrementa wins en 1 */
 	@Test
 	public void testUpdateResults1() {
-		ship.updateResults(1);
+		ship.updateResults(1, null);
 		assertEquals(1,ship.getWins());
 		assertEquals(0, ship.getLosses());
 	}
@@ -157,7 +157,7 @@ public class ShipTestP2 {
 	/* Se comprueba que UpdateResults(-1) incrementa wins en 1 */
 	@Test
 	public void testUpdateResults2() {
-		ship.updateResults(-1);
+		ship.updateResults(-1, null);
 		assertEquals(1, ship.getLosses());
 		assertEquals(0, ship.getWins());
 	}
@@ -166,7 +166,7 @@ public class ShipTestP2 {
 	/* Se comprueba que UpdateResults(2) no modifica ni wins ni losses*/
 	@Test
 	public void testUpdateResults() {
-		ship.updateResults(2);
+		ship.updateResults(2, null);
 		assertEquals(0, ship.getLosses());
 		assertEquals(0, ship.getWins());
 	}
@@ -463,8 +463,8 @@ public class ShipTestP2 {
 	 */
 	@Test
 	public void testToString3() {
-		for (int i=0; i<30; i++) ship.updateResults(1);
-		for (int i=0; i<45; i++) ship.updateResults(-1);
+		for (int i=0; i<30; i++) ship.updateResults(1, null);
+		for (int i=0; i<45; i++) ship.updateResults(-1, null);
 		ship.addFighters(kFleet2);
 		compareLines (kToString2, ship.toString());
 	}

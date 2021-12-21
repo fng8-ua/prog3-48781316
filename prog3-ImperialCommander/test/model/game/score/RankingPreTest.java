@@ -50,7 +50,8 @@ public class RankingPreTest {
 	/*
 	 * Se crea para Imperial los 2 tipos de Scores y se añaden a los distintos Ranking. Se 
 	 * comprueba que la salida de los ranking coincide con SRANKING1.
-	 * Imperial consigue 10 victorias y destruye 4 XWing, 3 YWing y 3 AWing. 
+	 * Imperial consigue 10 victorias y destruye 4 XWing, 3 YWing y 3 AWing.
+
 	 * Realiza lo mismo ahora para Rebel, pero registra solo las 9 primeras victorias (de 23) 
 	 * y destruyendo 8 TIEFighter, 8 TIEBomber y 7 TIEInterceptor.
 	 * Comprueba que la salida  coincide con SRANKING2
@@ -75,8 +76,36 @@ public class RankingPreTest {
 		}
 		destroyedRanking.addScore(destroyedScore);
 		winsRanking.addScore(winsScore);
+		
+		
+		
+		//Iniciamos marcadores para Raul
+		winsScore = new WinsScore(Side.REBEL);
+		destroyedScore = new DestroyedFightersScore(Side.REBEL);
+						
+		
+		
+						
+		//Modificamos los marcadores winsScore y destroyedScore de REBEL
+		// destruyendo 8 TIEFighter, 8 TIEBomber y 7 TIEInterceptor.
+		for (int i=0; i<9; i++) {
+				winsScore.score(1);
+				
+		}
+		for(int i = 0; i < 8; i++) {
+			destroyedScore.score(FighterFactory.createFighter(kIMPERIAL_FIGHTERS[0], imperialShip));
+			destroyedScore.score(FighterFactory.createFighter(kIMPERIAL_FIGHTERS[1], imperialShip));
+		}
+		for(int i = 0; i < 7; i++) {
+			destroyedScore.score(FighterFactory.createFighter(kIMPERIAL_FIGHTERS[2], imperialShip));
+		}
+		
+		
+		destroyedRanking.addScore(destroyedScore);
+		winsRanking.addScore(winsScore);
 		compareLines(SRANKING2, rankingsToString());
-		fail ("Continúa con el test ahora para Rebel y haz la comprobación");
+		
+		//fail ("Continúa con el test ahora para Rebel y haz la comprobación");
 		
 	}
 	
@@ -109,7 +138,9 @@ public class RankingPreTest {
 		destroyedRanking.addScore(destroyedScore);
 		winsRanking.addScore(winsScore);
 		
-		fail("Realiza algo parecido para REBEL y luego haz las comprobaciones finales con getWinner");
+		
+		
+		//fail("Realiza algo parecido para REBEL y luego haz las comprobaciones finales con getWinner");
 	}
 
 	

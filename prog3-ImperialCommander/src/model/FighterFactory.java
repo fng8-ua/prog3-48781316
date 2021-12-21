@@ -23,25 +23,37 @@ public class FighterFactory {
 	public static Fighter createFighter(String type, Ship mother) {
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(mother);
+		boolean correctType = false;
+		String[] types = {"TIEFighter","TIEBomber","TIEInterceptor","XWing","YWing","AWing","SuperFighter"};
 		
-		String className = "model.fighters." + type;
-		
-		Class<?> c = null;
-		
-			try {
-				c = Class.forName(className);
-			} catch (ClassNotFoundException e1) {
-				System.out.println("ERROR: Class not found exception.");
+		for(int i = 0; i < types.length; i++) {
+			if(type == types[i]) {
+				correctType = true;
 			}
+		}
+		
+		if(correctType) {
+			String className = "model.fighters." + type;
 			
-			try {
+			Class<?> c = null;
+			
+				try {
+					c = Class.forName(className);
+				} catch (ClassNotFoundException e1) {
+					System.out.println("ERROR: Class not found exception.");
+				}
 				
-				Fighter f = (Fighter) c.getDeclaredConstructor(Ship.class).newInstance(mother);
-				return f;
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				
-			}
+				try {
+					
+					Fighter f = (Fighter) c.getDeclaredConstructor(Ship.class).newInstance(mother);
+					return f;
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					
+				}
+		}
+		
+		
 			return null;
 			
 		

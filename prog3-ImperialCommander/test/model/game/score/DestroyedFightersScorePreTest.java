@@ -65,7 +65,14 @@ import model.game
 	public void testCompareTo() {
 		assertTrue(scRebel.compareTo(scRebel)==0);
 		assertTrue(scRebel.compareTo(scImperial)>0);
-		fail("Termina el test");
+		
+		scRebel.score(xWing); // +210
+		
+		assertTrue(scRebel.compareTo(scRebel)==0);
+		assertTrue(scRebel.compareTo(scImperial)<0);
+		assertTrue(scImperial.compareTo(scRebel)>0);
+		
+		//fail("Termina el test");
 		
 	}
 
@@ -79,8 +86,12 @@ import model.game
 		assertEquals(0,scImperial.getScore());
 		scImperial.score(xWing);
 		assertEquals(210,scImperial.getScore());
-		fail("Sigue aplicando score a scImperial con varios Fighters y comprobando "
-				+ "que los valores son correctos");
+		scImperial.score(xWing);
+		assertEquals(210 + xWing.getValue(),scImperial.getScore());
+		scImperial.score(yWing);
+		assertEquals(210 + xWing.getValue() + yWing.getValue(),scImperial.getScore());
+		//fail("Sigue aplicando score a scImperial con varios Fighters y comprobando "
+				//+ "que los valores son correctos");
 	}
 
 
@@ -100,8 +111,12 @@ import model.game
 
 		scRebel.score(tieFighter);
 		compareLines ("Player REBEL: 295",scRebel.toString());
-
-		fail("Continúa con el test");	
+		//xWing, yWing, aWing;
+		
+		scRebel.score(xWing);
+		compareLines ("Player REBEL: 505",scRebel.toString());
+		
+		//fail("Continúa con el test");	
 	}
 	
 	/*************************
