@@ -4,6 +4,7 @@
  */
 package model.game;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -143,68 +144,60 @@ public class PlayerRandom implements IPlayer{
 		 * */
 		
 		int option = RandomNumber.newRandomNumber(100);
-		List<Integer> idList;
+		List<Integer> idList = new ArrayList<>();
 		
 		if(option == 99) {
 			return false;
 		} else {
-			if(option >= 85) {
-				idList = ship.getFightersId("");
-				
-				if(idList.isEmpty()) {
-					System.out.println("ERROR: Empty list.");
-				} else {
-					int randomId = RandomNumber.newRandomNumber(idList.size());
+			try {
+				if(option >= 85) {
+					idList = ship.getFightersId("");
 					
-					try {
-						ship.improveFighter(idList.get(randomId), option, board);
-					} catch (WrongFighterIdException e) {
-						throw new RuntimeException(e);
-					}
-				}
-				
-				
-				
-			} else if (option >= 25) {
-				idList = ship.getFightersId("ship");
-				
-				if(idList.isEmpty()) {
-					System.out.println("ERROR: Empty list.");
-				} else {
-					int randomId = RandomNumber.newRandomNumber(idList.size());
-					
-					int x = RandomNumber.newRandomNumber(board.getSize());
-					int y = RandomNumber.newRandomNumber(board.getSize());
-					
-					Coordinate c = new Coordinate(x,y);
-					
-					try {
-						ship.launch(idList.get(randomId), c, board);
-					} catch (WrongFighterIdException | FighterAlreadyInBoardException | OutOfBoundsException e) {
-						throw new RuntimeException(e.getMessage());
-					}
-				}
-				
-				
-				
-			} else if (option >= 0) {
-				idList = ship.getFightersId("board");
-				
-				if(idList.isEmpty()) {
-					System.out.println("ERROR: Empty list.");
-				} else {
-					
-					try {
+					if(idList.isEmpty()) {
+						System.out.println("ERROR: Empty list.");
+					} else {
 						int randomId = RandomNumber.newRandomNumber(idList.size());
-						ship.patrol(idList.get(randomId), board);
-					} catch (WrongFighterIdException | FighterNotInBoardException e) {
-						throw new RuntimeException(e);
+						int id = idList.get(randomId);
+						ship.improveFighter(id, option, board);
+						
 					}
+					
+					
+					
+				} else if (option >= 25) {
+					idList = ship.getFightersId("ship");
+					
+					if(idList.isEmpty()) {
+						System.out.println("ERROR: La nave no tiene cazas");
+					} else {
+						int randomId = RandomNumber.newRandomNumber(idList.size());
+						int id = idList.get(randomId);
+						
+						int x = RandomNumber.newRandomNumber(board.getSize());
+						int y = RandomNumber.newRandomNumber(board.getSize());
+						
+						Coordinate c = new Coordinate(x,y);
+						ship.launch(id, c, board);
+						
+					}
+					
+					
+					
+				} else if (option >= 0) {
+					idList = ship.getFightersId("board");
+					
+					if(idList.isEmpty()) {
+						System.out.println("ERROR: Empty list.");
+					} else {
+						int randomId = RandomNumber.newRandomNumber(idList.size());
+						int id = idList.get(randomId);
+						ship.patrol(id, board);
+					}	
 				}
-				
-				
-				
+			} catch(WrongFighterIdException | RuntimeException | FighterAlreadyInBoardException | OutOfBoundsException | FighterNotInBoardException e) {
+				throw new RuntimeException(e);
 			}
+			
 			
 			return true;
 		}
@@ -215,12 +208,12 @@ public class PlayerRandom implements IPlayer{
 	
 	@Override
 	public WinsScore getWinsScore() {
-		return getGameShip().getWinsScore();
+		return ship.getWinsScore();
 	}
 
 	@Override
 	public DestroyedFightersScore getDestroyedFightersScore() {
-		return getGameShip().getDestroyedFightersScore();
+		return ship.getDestroyedFightersScore();
 	}
 
 }

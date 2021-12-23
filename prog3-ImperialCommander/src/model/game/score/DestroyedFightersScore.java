@@ -1,3 +1,7 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
 package model.game.score;
 
 import model.Fighter;

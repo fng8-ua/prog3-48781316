@@ -1,3 +1,7 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
 package model.game.score;
 
 import model.Side;
@@ -23,7 +27,7 @@ public class WinsScore extends Score<Integer>{
 	 * @param w the w
 	 */
 	public void score(Integer w) {
-		if(w == 1) {
+		if(w != null && w == 1) {
 			score++;
 		}
 	}

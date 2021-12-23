@@ -1,3 +1,7 @@
+/**
+ * @author Fernando Navarro Gonzalez
+ * @author 48781316H
+ */
 package model.game.score;
 
 import java.util.SortedSet;
@@ -37,9 +41,6 @@ public class Ranking<ScoreType extends Score<?>> {
 	 * @return the winner
 	 */
 	public ScoreType getWinner(){
-		if(scoreSet.isEmpty()) {
-			throw new RuntimeException();
-		}
 		return scoreSet.first();
 	}
 	

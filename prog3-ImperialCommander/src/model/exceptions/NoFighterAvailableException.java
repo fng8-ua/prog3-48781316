@@ -29,7 +29,7 @@ public class NoFighterAvailableException extends Exception{
 	 * @return the message
 	 */
 	public String getMessage() {
-		return "ERROR: specified fighter of type" + type + " not found";
+		return "ERROR: specified fighter of type " + type + " not found";
 	}
 	
 }

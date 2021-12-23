@@ -7,6 +7,7 @@ package model.game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.IntBinaryOperator;
 
 import model.Board;
 import model.Coordinate;
@@ -31,10 +32,12 @@ public class GameShip extends Ship{
 	
 	@Override
 	public void updateResults(int r, Fighter f) {
-		updateResults(r, f);
+		super.updateResults(r, f);
 		
 		if(r == 1) {
-			//TODO
+			winsScore.score(r);
+			destroyedFightersScore.score(f);
+			
 		}
 	}
 	
@@ -56,7 +59,8 @@ public class GameShip extends Ship{
 	 */
 	public GameShip(String name, Side side) {
 		super(name, side);
-		
+		winsScore = new WinsScore(side);
+		destroyedFightersScore = new DestroyedFightersScore(side);
 	}
 	
 	/**
@@ -67,14 +71,13 @@ public class GameShip extends Ship{
 	public boolean isFleetDestroyed() {
 		boolean fleetDestroyed = true;
 		
-		for(Fighter f: fleet) {
-			if(f != null) {
-				if(!f.isDestroyed()) {
-					return false;
-				}
+		if(!fleet.isEmpty()){
+			for(Fighter f : fleet) {
+				if(!f.isDestroyed())
+					fleetDestroyed = false;
 			}
 		}
-		
+			
 		return fleetDestroyed;
 	}
 	

@@ -8,6 +8,9 @@ import java.util.Objects;
 
 import model.Side;
 import model.exceptions.InvalidSizeException;
+import model.game.score.DestroyedFightersScore;
+import model.game.score.Ranking;
+import model.game.score.WinsScore;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -41,12 +44,13 @@ public class Game {
 		this.imperial = imperial;
 		
 		try {
-			this.board = new GameBoard(BOARD_SIZE);
-			imperial.setBoard(board);
-			rebel.setBoard(board);
+			board = new GameBoard(BOARD_SIZE);
+			
 		} catch (InvalidSizeException e) {
 			throw new RuntimeException(e);
 		}
+		this.imperial.setBoard(board);
+		this.rebel.setBoard(board);
 	}
 	
 	
@@ -59,26 +63,19 @@ public class Game {
 		return board;
 	}
 	
-	/**
-	 * Show ships data.
-	 *
-	 * @param rebel the rebel
-	 * @param imperial the imperial
-	 * @param board the board
-	 */
-	private void showShipsData(IPlayer rebel, IPlayer imperial, GameBoard board) {
-		// showData(rebel,imperial,board,"before")
-		// showData(rebel,imperial,board,"middle")
-		// showData(rebel,imperial,board,"after")
-		StringBuilder str = new StringBuilder();
 	
-		str.append(board.toString());
-		str.append("\n");
-		str.append(imperial.getGameShip().toString());
-		str.append("\n");
-		str.append(rebel.getGameShip().toString());
-		str.append("\n");
+	public void getRanking() {
+		Ranking<WinsScore> rw = new Ranking<>();
+		Ranking<DestroyedFightersScore> dr = new Ranking<>();
 		
+		rw.addScore(imperial.getWinsScore());
+		rw.addScore(rebel.getWinsScore());
+		
+		dr.addScore(imperial.getDestroyedFightersScore());
+		dr.addScore(rebel.getDestroyedFightersScore());
+		
+		System.out.print("RANKING WINS: " + rw.toString() + "\n");
+		System.out.print("RANKING DESTROYED: " + dr.toString() + "\n");
 	}
 	
 	/**
@@ -88,67 +85,62 @@ public class Game {
 	 */
 	public Side play() {
 		Side winner = null;
-
-		
 		imperial.initFighters();
 		rebel.initFighters();
 		
+		
 		while(winner == null) {
-			//before imperial
-			System.out.println("BEFORE IMPERIAL\n");
-			System.out.println(board.toString());
-			showShipsData(rebel,imperial,board);
-			System.out.println("IMPERIAL(" + imperial.getGameShip().getFightersId("board").size() + "): ");
-			
-			
+			getRanking();
+			//Aquí mostrar los rankings haciendo una función a parte	
+			System.out.print("BEFORE IMPERIAL\n");
+			System.out.print(board.toString() + "\n");
+			System.out.print("\n");
+			System.out.print(imperial.showShip() + "\n");
+			System.out.print(rebel.showShip() + "\n");
+			System.out.print("IMPERIAL(" + imperial.getGameShip().getFightersId("board").size() + "):");
 			boolean noExit = imperial.nextPlay();
-			imperial.purgeFleet();
+			
+			if(imperial.isFleetDestroyed()) {
+				winner = Side.REBEL;
+			} else if(rebel.isFleetDestroyed()) {
+				winner = Side.IMPERIAL;
+			}
 			
 			if(noExit) {
+				System.out.print("AFTER IMPERIAL, BEFORE REBEL\n");
+				System.out.print(board.toString() + "\n");
+				System.out.print("\n");
+				System.out.print(imperial.showShip() + "\n");
+				System.out.print(rebel.showShip() + "\n");
 				
-				//after imperial
-				System.out.println("AFTER IMPERIAL, BEFORE REBEL\n");
-				System.out.println(board.toString());
-				showShipsData(rebel,imperial,board);
-				
-				if(imperial.isFleetDestroyed()) {
-					winner = Side.REBEL;
-					return Side.REBEL;
-				} else if(rebel.isFleetDestroyed()) {
-					winner = Side.IMPERIAL;
-					return Side.IMPERIAL;
-				} else {
+				if(winner == null) {
 					//before rebel
-					System.out.println("REBEL(" + rebel.getGameShip().getFightersId("board").size() + "): ");
-					
+					System.out.print("REBEL(" + rebel.getGameShip().getFightersId("board").size() + "):");
 					noExit = rebel.nextPlay();
-					rebel.purgeFleet();
 					
 					if(noExit) {
-						
-						//after rebel
-						System.out.println("AFTER REBEL\n");
-						System.out.println(board.toString());
-						showShipsData(rebel,imperial,board);
-						
+						System.out.print("AFTER REBEL\n");
+						System.out.print(board.toString() + "\n");
+						System.out.print("\n");
+						System.out.print(imperial.showShip() + "\n");
+						System.out.print(rebel.showShip() + "\n");
+						imperial.purgeFleet();
+						rebel.purgeFleet();
 						if(rebel.isFleetDestroyed()) {
 							winner = Side.IMPERIAL;
-							return Side.IMPERIAL;
 						} else if(imperial.isFleetDestroyed()) {
 							winner = Side.REBEL;
-							return Side.REBEL;
 						}
+					} else {
+						winner = Side.IMPERIAL;
 					}
-					
-					
 				}
-				
-			}	
+			} else {
+				winner = Side.REBEL;
+			}
 		}
 		
-		imperial.purgeFleet();
-		rebel.purgeFleet();
-		
+		getRanking();
 		return winner;
 	}
 }

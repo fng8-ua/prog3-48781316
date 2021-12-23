@@ -138,15 +138,11 @@ public class Ship {
 	 */
 	public Fighter getFirstAvailableFighter(String t) throws NoFighterAvailableException {
 		Objects.requireNonNull(t);
-		
-		 boolean enc = false;
-			for(int i = 0; i < fleet.size() && !enc; i++) {
-				Fighter fighter = fleet.get(i);
-				if((t.isEmpty() || t.equals(fighter.getType())) && !fighter.isDestroyed()) {
-					if(fighter.getPosition() == null) {
-						enc = true;
-						return fighter;
-					}
+		Fighter f = null;
+			for(int i = 0; i < fleet.size(); i++) {
+				f = fleet.get(i);
+				if(f.getPosition() == null && f != null && !f.isDestroyed() && (t.isEmpty() || f.getType().equals(t))){
+					return f;
 				}
 			}
 			

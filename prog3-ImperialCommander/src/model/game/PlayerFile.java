@@ -45,7 +45,6 @@ public class PlayerFile implements IPlayer{
 		
 		ship = new GameShip("PlayerFile " + side + " Ship", side);
 		this.br = br;
-		board = null;
 		
 	}
 	
@@ -75,14 +74,15 @@ public class PlayerFile implements IPlayer{
 	 */
 	@Override
 	public void initFighters() {
-		String brLine = new String();
+
 		try {
-			brLine = br.readLine();
+			String brLine = br.readLine();
+			ship.addFighters(brLine);
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 		
-		ship.addFighters(brLine);
+		
 	}
 
 	/**
@@ -126,13 +126,10 @@ public class PlayerFile implements IPlayer{
 	@Override
 	public boolean nextPlay() {
 		
-		String brLine;
-		String[] tokens;
-		
 		try {
 			
-			brLine = br.readLine();
-			tokens = brLine.split(" ");
+			String brLine = br.readLine();
+			String [] tokens = brLine.split(" ");
 		
 		
 			switch(tokens[0]) {
@@ -171,7 +168,7 @@ public class PlayerFile implements IPlayer{
 				return true;
 				
 			case "launch":
-				if(tokens.length != 3 || tokens.length != 4) {
+				if(tokens.length != 3 && tokens.length != 4) {
 					System.out.println("ERROR: launch wrong input's length.");
 				} else {
 					if(tokens.length == 3) {
@@ -182,7 +179,7 @@ public class PlayerFile implements IPlayer{
 							board.launch(c, ship.getFirstAvailableFighter(""));
 						} catch (FighterAlreadyInBoardException | OutOfBoundsException
 								| NoFighterAvailableException e) {
-							System.out.println(e);
+							System.out.println(e.getMessage());
 						}
 					} else if(tokens.length == 4) {
 						try {
@@ -202,7 +199,7 @@ public class PlayerFile implements IPlayer{
 								board.launch(c, ship.getFirstAvailableFighter(tokens[3]));
 							} catch (FighterAlreadyInBoardException | OutOfBoundsException
 									| NoFighterAvailableException e1) {
-								System.out.println(e.getMessage());
+								System.out.println(e1.getMessage());
 							}
 						}
 						
@@ -222,15 +219,15 @@ public class PlayerFile implements IPlayer{
 		return true;
 
 	}
-
+	
 	@Override
 	public WinsScore getWinsScore() {
-		return getGameShip().getWinsScore();
+		return ship.getWinsScore();
 	}
 
 	@Override
 	public DestroyedFightersScore getDestroyedFightersScore() {
-		return getGameShip().getDestroyedFightersScore();
+		return ship.getDestroyedFightersScore();
 	}
 		
 

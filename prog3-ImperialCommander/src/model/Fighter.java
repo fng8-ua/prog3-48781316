@@ -14,85 +14,6 @@ import model.exceptions.FighterIsDestroyedException;
  */
 public abstract class Fighter {
 	
-	public int getValue() {
-		return velocity + attack;
-	}
-
-	
-	/**
-	 * Copy.
-	 *
-	 * @return the fighter
-	 */
-	public abstract Fighter copy();
-	
-	/**
-	 * Gets the symbol.
-	 *
-	 * @return the symbol
-	 */
-	public abstract char getSymbol();
-	
-	/**
-	 * Hash code.
-	 *
-	 * @return the int
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + attack;
-		result = prime * result + id;
-		result = prime * result + ((motherShip == null) ? 0 : motherShip.hashCode());
-		result = prime * result + ((position == null) ? 0 : position.hashCode());
-		result = prime * result + shield;
-		result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
-		result = prime * result + velocity;
-		return result;
-	}
-
-	/**
-	 * Equals.
-	 *
-	 * @param obj the obj
-	 * @return true, if successful
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Fighter other = (Fighter) obj;
-		if (attack != other.attack)
-			return false;
-		if (id != other.id)
-			return false;
-		if (motherShip == null) {
-			if (other.motherShip != null)
-				return false;
-		} else if (!motherShip.equals(other.motherShip))
-			return false;
-		if (position == null) {
-			if (other.position != null)
-				return false;
-		} else if (!position.equals(other.position))
-			return false;
-		if (shield != other.shield)
-			return false;
-		if (getType() == null) {
-			if (other.getType() != null)
-				return false;
-		} else if (!getType().equals(other.getType()))
-			return false;
-		if (velocity != other.velocity)
-			return false;
-		return true;
-	}
-
 	/** Tipo del caza. */
 	// DESAPARECE
 	
@@ -116,6 +37,10 @@ public abstract class Fighter {
 	
 	/** Nave a la que pertenece el caza. */
 	private Ship motherShip;
+	
+
+
+	
 	
 	/**
 	 * Crea un nuevo fighter.
@@ -352,5 +277,84 @@ public abstract class Fighter {
 			
 		} while(!enemy.isDestroyed() && !isDestroyed());
 	return 0;
+	}
+	
+	public int getValue() {
+		return velocity + attack;
+	}
+
+	
+	/**
+	 * Copy.
+	 *
+	 * @return the fighter
+	 */
+	public abstract Fighter copy();
+	
+	/**
+	 * Gets the symbol.
+	 *
+	 * @return the symbol
+	 */
+	public abstract char getSymbol();
+	
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + attack;
+		result = prime * result + id;
+		result = prime * result + ((motherShip == null) ? 0 : motherShip.hashCode());
+		result = prime * result + ((position == null) ? 0 : position.hashCode());
+		result = prime * result + shield;
+		result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
+		result = prime * result + velocity;
+		return result;
+	}
+
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fighter other = (Fighter) obj;
+		if (attack != other.attack)
+			return false;
+		if (id != other.id)
+			return false;
+		if (motherShip == null) {
+			if (other.motherShip != null)
+				return false;
+		} else if (!motherShip.equals(other.motherShip))
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		if (shield != other.shield)
+			return false;
+		if (getType() == null) {
+			if (other.getType() != null)
+				return false;
+		} else if (!getType().equals(other.getType()))
+			return false;
+		if (velocity != other.velocity)
+			return false;
+		return true;
 	}
 }

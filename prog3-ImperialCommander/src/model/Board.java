@@ -244,7 +244,7 @@ public class Board {
 		 
 		 */
 		
-		if(f.getPosition() != null || board.containsValue(f)) {
+		if(f.getPosition() != null) {
 			throw new FighterAlreadyInBoardException(f);
 		}
 
@@ -265,8 +265,8 @@ public class Board {
 						f.getMotherShip().updateResults(1, enemy);
 						enemy.getMotherShip().updateResults(-1, enemy);
 					} else {
-						f.getMotherShip().updateResults(1, f);
-						enemy.getMotherShip().updateResults(-1, f);
+						f.getMotherShip().updateResults(-1, f);
+						enemy.getMotherShip().updateResults(1, f);
 					}
 					
 					
@@ -312,7 +312,7 @@ public class Board {
 		try {
 			vecinos = getNeighborhood(f.getPosition());
 		} catch (OutOfBoundsException e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 		
 		for(Coordinate c: vecinos) {
@@ -322,7 +322,9 @@ public class Board {
 					try {
 						r = f.fight(enemy);
 						
-						
+						} catch (FighterIsDestroyedException e) {
+							throw new RuntimeException(e);
+						}
 						
 						if(r == 1) {
 							f.getMotherShip().updateResults(1, enemy);
@@ -330,16 +332,16 @@ public class Board {
 							board.remove(c);
 							enemy.setPosition(null);
 						} else if(r == -1){
-							f.getMotherShip().updateResults(1, f);
-							enemy.getMotherShip().updateResults(-1, f);
+							f.getMotherShip().updateResults(-1, f);
+							enemy.getMotherShip().updateResults(1, f);
 							board.remove(f.getPosition());
 							f.setPosition(null);
 							break;
 						}
-					} catch (FighterIsDestroyedException e) {
-						throw new RuntimeException();
-					}
+					
 				}
+			} else {
+				throw new RuntimeException();
 			}
 		}
 	}

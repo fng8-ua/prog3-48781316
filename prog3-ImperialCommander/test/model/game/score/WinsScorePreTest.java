@@ -70,7 +70,7 @@ public class WinsScorePreTest {
 		assertEquals(0,scImperial.getScore());
 		scImperial.score(10);
 		assertEquals(0,scImperial.getScore());
-		fail("Termina el test");
+		//fail("Termina el test");
 	}
 	
 	/* Se comprueba toString sobre el WinsScore scRebel y se comprueba que
@@ -87,7 +87,7 @@ public class WinsScorePreTest {
 	
 		scRebel.score(0);
 		compareLines ("Player REBEL: 0",scRebel.toString());
-		fail("Termina el test");
+		//fail("Termina el test");
 	}
 	
 	/*************************
