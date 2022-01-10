@@ -120,6 +120,7 @@ public class Ship {
 	 * a�ade una victoria o una derrota seg�n si r es 1  o -1 respectivamente.
 	 *
 	 * @param r the r
+	 * @param f the f
 	 */
 	public void updateResults(int r, Fighter f) {
 		if(r == 1)

@@ -206,11 +206,21 @@ public class PlayerRandom implements IPlayer{
 
 	}
 	
+	/**
+	 * Gets the wins score.
+	 *
+	 * @return the wins score
+	 */
 	@Override
 	public WinsScore getWinsScore() {
 		return ship.getWinsScore();
 	}
 
+	/**
+	 * Gets the destroyed fighters score.
+	 *
+	 * @return the destroyed fighters score
+	 */
 	@Override
 	public DestroyedFightersScore getDestroyedFightersScore() {
 		return ship.getDestroyedFightersScore();

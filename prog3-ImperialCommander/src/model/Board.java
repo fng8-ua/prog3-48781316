@@ -264,6 +264,9 @@ public class Board {
 					if(result == 1) {
 						f.getMotherShip().updateResults(1, enemy);
 						enemy.getMotherShip().updateResults(-1, enemy);
+						board.put(c, f);
+						f.setPosition(c);
+						enemy.setPosition(null);
 					} else {
 						f.getMotherShip().updateResults(-1, f);
 						enemy.getMotherShip().updateResults(1, f);

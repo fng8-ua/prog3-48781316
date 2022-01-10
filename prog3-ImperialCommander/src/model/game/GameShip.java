@@ -27,9 +27,18 @@ import model.game.score.WinsScore;
  */
 public class GameShip extends Ship{
 	
+	/** The destroyed fighters score. */
 	private DestroyedFightersScore destroyedFightersScore;
+	
+	/** The wins score. */
 	private WinsScore winsScore;
 	
+	/**
+	 * Update results.
+	 *
+	 * @param r the r
+	 * @param f the f
+	 */
 	@Override
 	public void updateResults(int r, Fighter f) {
 		super.updateResults(r, f);
@@ -41,10 +50,20 @@ public class GameShip extends Ship{
 		}
 	}
 	
+	/**
+	 * Gets the destroyed fighters score.
+	 *
+	 * @return the destroyed fighters score
+	 */
 	public DestroyedFightersScore getDestroyedFightersScore() {
 		return destroyedFightersScore;
 	}
 	
+	/**
+	 * Gets the wins score.
+	 *
+	 * @return the wins score
+	 */
 	public WinsScore getWinsScore() {
 		return winsScore;
 	}

@@ -64,6 +64,11 @@ public class Game {
 	}
 	
 	
+	/**
+	 * Gets the ranking.
+	 *
+	 * 
+	 */
 	public void getRanking() {
 		Ranking<WinsScore> rw = new Ranking<>();
 		Ranking<DestroyedFightersScore> dr = new Ranking<>();
@@ -91,7 +96,7 @@ public class Game {
 		
 		while(winner == null) {
 			getRanking();
-			//Aquí mostrar los rankings haciendo una función a parte	
+			//Aquï¿½ mostrar los rankings haciendo una funciï¿½n a parte	
 			System.out.print("BEFORE IMPERIAL\n");
 			System.out.print(board.toString() + "\n");
 			System.out.print("\n");

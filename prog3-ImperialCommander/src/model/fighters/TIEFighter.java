@@ -6,6 +6,7 @@ package model.fighters;
 import model.Fighter;
 import model.Ship;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class TIEFighter.
  */

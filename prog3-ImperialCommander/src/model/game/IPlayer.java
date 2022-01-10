@@ -13,8 +13,18 @@ import model.game.score.WinsScore;
  */
 public interface IPlayer {
 	
+	/**
+	 * Gets the wins score.
+	 *
+	 * @return the wins score
+	 */
 	public WinsScore getWinsScore();
 	
+	/**
+	 * Gets the destroyed fighters score.
+	 *
+	 * @return the destroyed fighters score
+	 */
 	public DestroyedFightersScore getDestroyedFightersScore();
 
 	/**

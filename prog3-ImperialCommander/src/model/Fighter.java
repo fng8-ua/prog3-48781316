@@ -228,7 +228,7 @@ public abstract class Fighter {
 		if(position == null) {
 			str.append("("+ getType() + " " + id + " " + motherShip.getSide() + " null " + "{" + velocity + "," + attack + "," + shield + "})");
 		} else {
-			str.append("("+ getType() + " " + id + " " + motherShip.getSide() + " [" + position.getX() + "," + position.getY() + "] " + "{" + velocity + "," + attack + "," + shield + "})");  
+			str.append("("+ getType() + " " + id + " " + motherShip.getSide() + " " + position.toString() + " {" + velocity + "," + attack + "," + shield + "})");  
 		}
 		
 		return str.toString();
@@ -262,14 +262,14 @@ public abstract class Fighter {
 			
 			if(umbral <= n) {
 				// el atacante sera el caza
-				enemy.addShield(-this.getDamage(n,this));
+				enemy.addShield(-this.getDamage(n,enemy));
 				
 				if(enemy.isDestroyed())
 					return 1;
 				
 			} else {
 				// el atacante sera el enemigo
-				this.addShield(-enemy.getDamage(100-n,enemy));
+				this.addShield(-enemy.getDamage(100-n,this));
 				
 				if(this.isDestroyed())
 					return -1;
@@ -279,6 +279,11 @@ public abstract class Fighter {
 	return 0;
 	}
 	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return velocity + attack;
 	}
